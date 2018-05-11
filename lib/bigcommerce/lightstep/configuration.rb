@@ -80,8 +80,8 @@ module Bigcommerce
         end
         self.component_name = ENV.fetch('LIGHTSTEP_COMPONENT_NAME', '')
         self.access_token = ENV.fetch('LIGHTSTEP_ACCESS_TOKEN', '')
-        self.host = ENV.fetch('LIGHTSTEP_HOST', '')
-        self.port = ENV.fetch('LIGHTSTEP_PORT', 443).to_i
+        self.host = ENV.fetch('LIGHTSTEP_HOST', 'lightstep-collector.linkerd')
+        self.port = ENV.fetch('LIGHTSTEP_PORT', 4140).to_i
         self.ssl_verify_peer = ENV.fetch('LIGHTSTEP_SSL_VERIFY_PEER', true)
         self.verbosity = ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i
         self.logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)

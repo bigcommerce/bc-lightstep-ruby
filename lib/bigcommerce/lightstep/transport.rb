@@ -48,8 +48,10 @@ module Bigcommerce
         @logger.info report if @verbose >= 3
 
         https = ::Net::HTTP.new(@host, @port)
-        https.use_ssl = @encryption == ENCRYPTION_TLS
-        https.verify_mode = ::OpenSSL::SSL::VERIFY_NONE unless @ssl_verify_peer
+        if port == 443
+          https.use_ssl = @encryption == ENCRYPTION_TLS
+          https.verify_mode = ::OpenSSL::SSL::VERIFY_NONE unless @ssl_verify_peer
+        end
         req = Net::HTTP::Post.new('/api/v0/reports')
         req['LightStep-Access-Token'] = @access_token
         req['Content-Type'] = 'application/json'
