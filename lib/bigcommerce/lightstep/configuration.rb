@@ -26,6 +26,10 @@ module Bigcommerce
         host: 'lightstep-collector.linkerd',
         port: 4140,
         ssl_verify_peer: true,
+        open_timeout: 20,
+        read_timeout: 20,
+        continue_timeout: nil,
+        keep_alive_timeout: 2,
         logger: nil,
         verbosity: 1
       }.freeze

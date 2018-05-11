@@ -11,6 +11,8 @@ module Bigcommerce
       LIGHTSTEP_HOST = 'collector.lightstep.com'.freeze
       LIGHTSTEP_PORT = 443
 
+      REPORTS_API_ENDPOINT = '/api/v0/reports'.freeze
+
       ENCRYPTION_TLS = 'tls'.freeze
       ENCRYPTION_NONE = 'none'.freeze
 
@@ -29,6 +31,10 @@ module Bigcommerce
         verbose: 0,
         encryption: ENCRYPTION_TLS,
         ssl_verify_peer: true,
+        open_timeout: 20,
+        read_timeout: 20,
+        continue_timeout: nil,
+        keep_alive_timeout: 2,
         logger: nil
       )
         @host = host
@@ -36,10 +42,14 @@ module Bigcommerce
         @verbose = verbose
         @encryption = encryption
         @ssl_verify_peer = ssl_verify_peer
+        @open_timeout = open_timeout.to_i
+        @read_timeout = read_timeout.to_i
+        @continue_timeout = continue_timeout
+        @keep_alive_timeout = keep_alive_timeout.to_i
 
         raise ::LightStep::Tracer::ConfigurationError, 'access_token must be a string' unless access_token.is_a?(String)
         raise ::LightStep::Tracer::ConfigurationError, 'access_token cannot be blank'  if access_token.empty?
-        @access_token = access_token
+        @access_token = access_token.to_s
         @logger = logger || ::Logger.new(STDOUT)
       end
 
@@ -47,21 +57,45 @@ module Bigcommerce
       def report(report)
         @logger.info report if @verbose >= 3
 
-        https = ::Net::HTTP.new(@host, @port)
-        if @port == 443
-          https.use_ssl = @encryption == ENCRYPTION_TLS
-          https.verify_mode = ::OpenSSL::SSL::VERIFY_NONE unless @ssl_verify_peer
-        end
-        req = Net::HTTP::Post.new('/api/v0/reports')
-        req['LightStep-Access-Token'] = @access_token
-        req['Content-Type'] = 'application/json'
-        req['Connection'] = 'keep-alive'
-        req.body = report.to_json
-        res = https.request(req)
+        req = build_request(report)
+        res = connection.request(req)
 
         @logger.info res.to_s if @verbose >= 3
 
         nil
+      end
+
+      private
+
+      ##
+      # @param [Hash] report
+      # @return [Net::HTTP::Post]
+      #
+      def build_request(report)
+        req = Net::HTTP::Post.new(REPORTS_API_ENDPOINT)
+        req['LightStep-Access-Token'] = @access_token
+        req['Content-Type'] = 'application/json'
+        req['Connection'] = 'keep-alive'
+        req.body = report.to_json
+        req
+      end
+
+      ##
+      # @return [Net::HTTP]
+      #
+      def connection
+        unless @connection
+          @connection = ::Net::HTTP.new(@host, @port)
+          if @port == 443
+            @connection.use_ssl = @encryption == ENCRYPTION_TLS
+            @connection.verify_mode = ::OpenSSL::SSL::VERIFY_NONE unless @ssl_verify_peer
+          end
+          @connection.open_timeout = @open_timeout
+          @connection.read_timeout = @read_timeout
+          @connection.continue_timeout = @continue_timeout
+          @connection.keep_alive_timeout = @keep_alive_timeout
+        end
+        @connection
       end
     end
   end
