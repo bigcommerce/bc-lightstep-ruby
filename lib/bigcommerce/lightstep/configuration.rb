@@ -23,11 +23,11 @@ module Bigcommerce
       VALID_CONFIG_KEYS = {
         component_name: '',
         access_token: '',
-        host: '',
-        port: 443,
+        host: 'lightstep-collector.linkerd',
+        port: 4140,
         ssl_verify_peer: true,
         logger: nil,
-        verbosity: 3
+        verbosity: 1
       }.freeze
 
       attr_accessor *VALID_CONFIG_KEYS.keys
