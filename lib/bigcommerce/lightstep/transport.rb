@@ -48,7 +48,7 @@ module Bigcommerce
         @logger.info report if @verbose >= 3
 
         https = ::Net::HTTP.new(@host, @port)
-        if port == 443
+        if @port == 443
           https.use_ssl = @encryption == ENCRYPTION_TLS
           https.verify_mode = ::OpenSSL::SSL::VERIFY_NONE unless @ssl_verify_peer
         end

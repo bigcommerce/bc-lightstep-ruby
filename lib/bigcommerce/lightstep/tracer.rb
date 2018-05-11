@@ -37,11 +37,15 @@ module Bigcommerce
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
         tracer.enable
-        context = tracer.extract(::LightStep::Tracer::FORMAT_TEXT_MAP, context || {}) unless context.is_a?(::LightStep::SpanContext)
-
-        span = ::LightStep.start_span(name, child_of: context, start_time: start_time, tags: tags)
-
         parent_span = active_span
+
+        # first attempt to find parent from args, if not, use carrier (headers) to lookup parent
+        current_parent = context.is_a?(::LightStep::SpanContext) ? context : tracer.extract(::LightStep::Tracer::FORMAT_TEXT_MAP, context || {})
+        # if no passed in parent, use the active thread parent
+        current_parent = active_span if current_parent.nil?
+
+        span = ::LightStep.start_span(name, child_of: current_parent, start_time: start_time, tags: tags)
+
         self.active_span = span
 
         result = yield span
