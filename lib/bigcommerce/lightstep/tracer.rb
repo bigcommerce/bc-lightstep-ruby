@@ -34,7 +34,6 @@ module Bigcommerce
       # @param [Hash] context (Optional)
       # @param [Time] start_time (Optional)
       # @param [Hash] tags (Optional)
-      # @return [LightStep::Span]
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
         tracer.enable
