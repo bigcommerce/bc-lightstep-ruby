@@ -37,6 +37,7 @@ module Bigcommerce
       # @return [LightStep::Span]
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
+        tracer.enable
         context = tracer.extract(::LightStep::Tracer::FORMAT_TEXT_MAP, context || {}) unless context.is_a?(::LightStep::SpanContext)
 
         span = ::LightStep.start_span(name, child_of: context, start_time: start_time, tags: tags)

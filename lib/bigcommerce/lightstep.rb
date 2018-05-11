@@ -42,7 +42,6 @@ module Bigcommerce
         component_name: component_name,
         transport: transport
       )
-      ::LightStep.instance.enable
     end
   end
 end
