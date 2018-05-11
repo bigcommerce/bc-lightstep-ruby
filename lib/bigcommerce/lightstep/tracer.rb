@@ -45,10 +45,11 @@ module Bigcommerce
         parent_span = active_span
         self.active_span = span
 
-        yield span
+        result = yield span
 
         span.finish
         self.active_span = parent_span
+        result
       end
 
       ##
