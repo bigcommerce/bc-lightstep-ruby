@@ -1,6 +1,6 @@
 # bc-lightstep-ruby - LightStep distributed tracing
 
-[![Build Status](https://travis-ci.com/bigcommerce/bc-lightstep-ruby.svg?branch=master)](https://travis-ci.com/bigcommerce/bc-lightstep-ruby)
+[![Build Status](https://travis-ci.com/bigcommerce/bc-lightstep-ruby.svg?token=D3Cc4LCF9BgpUx4dpPpv&branch=master)](https://travis-ci.com/bigcommerce/bc-lightstep-ruby)
 
 Adds [LightStep](https://lightstep.com) tracing support for Ruby.
 
