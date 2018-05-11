@@ -14,7 +14,6 @@ Then in an initializer or before use:
 
 ```ruby
 require 'bigcommerce/lightstep'
-
 Bigcommerce::Lightstep.configure do |c|
   c.component_name = 'myapp'
   c.access_token = 'abcdefg'
@@ -33,6 +32,21 @@ tracer.start_span('my-span', context: request.headers) do |span|
   # do thing to measure
 end
 ```
+
+### Environment Config
+
+bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd rather use that instead:
+
+| Name | Description |
+| ---- | ----------- |
+| LIGHTSTEP_COMPONENT_NAME | The component name to use |
+| LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector |
+| LIGHTSTEP_HOST | Host of the collector. Defaults to `lightstep-collector.linkerd` |
+| LIGHTSTEP_PORT | Port of the collector. Defaults to `4140` |
+| LIGHTSTEP_SSL_VERIFY_PEER | If using 443 as the port, toggle SSL verification. Defaults to true. |
+| LIGHTSTEP_VERBOSITY | The verbosity level of lightstep logs. Defaults to 1. |
+
+Most BC systems will only need to customize the component name.
 
 ## License
 
