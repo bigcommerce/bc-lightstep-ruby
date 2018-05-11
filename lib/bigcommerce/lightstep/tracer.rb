@@ -19,7 +19,6 @@ module Bigcommerce
     # Global tracer
     #
     class Tracer
-
       private
 
       def initialize; end

@@ -35,7 +35,7 @@ module Bigcommerce
         verbose: verbosity.to_i,
         encryption: port.to_i == 443 ? ::Bigcommerce::Lightstep::Transport::ENCRYPTION_TLS : ::Bigcommerce::Lightstep::Transport::ENCRYPTION_NONE,
         ssl_verify_peer: ssl_verify_peer,
-        access_token: access_token,
+        access_token: access_token
       )
       ::LightStep.logger = logger
       ::LightStep.configure(

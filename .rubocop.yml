@@ -11,3 +11,9 @@ AllCops:
     - log/**/*
     - Rakefile
     - bc-lightstep-ruby.gemspec
+
+Lint/AmbiguousOperator:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
