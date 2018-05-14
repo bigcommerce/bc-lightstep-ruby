@@ -31,27 +31,36 @@ module Bigcommerce
       # Start a new span
       #
       # @param [String] name The operation name for the Span
-      # @param [Hash] context (Optional)
+      # @param [Hash|::LightStep::SpanContext] context (Optional)
       # @param [Time] start_time (Optional)
       # @param [Hash] tags (Optional)
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
+        # enable the tracer (for fork support)
         tracer.enable
-        parent_span = active_span
 
-        # first attempt to find parent from args, if not, use carrier (headers) to lookup parent
-        current_parent = context.is_a?(::LightStep::SpanContext) ? context : tracer.extract(::LightStep::Tracer::FORMAT_TEXT_MAP, context || {})
-        # if no passed in parent, use the active thread parent
-        current_parent = active_span if current_parent.nil?
+        # find the currently active span
+        last_active_span = active_span
 
+        # determine who is the actual parent span
+        current_parent = determine_parent(context: context)
+
+        # create new span
         span = ::LightStep.start_span(name, child_of: current_parent, start_time: start_time, tags: tags)
 
+        # set it as the active span
         self.active_span = span
 
+        # run the process
         result = yield span
 
+        # finish this span
         span.finish
-        self.active_span = parent_span
+
+        # now set back the parent as the active span
+        self.active_span = last_active_span
+
+        # return result
         result
       end
 
@@ -63,6 +72,20 @@ module Bigcommerce
       end
 
       private
+
+      ##
+      # Determine the active parent
+      #
+      # @param [Hash|::LightStep::SpanContext] context
+      # @return [::LightStep::SpanContext]
+      #
+      def determine_parent(context:)
+        # first attempt to find parent from args, if not, use carrier (headers) to lookup parent
+        current_parent = context.is_a?(::LightStep::SpanContext) ? context : tracer.extract(::LightStep::Tracer::FORMAT_TEXT_MAP, context || {})
+        # if no passed in parent, use the active thread parent
+        current_parent = active_span if current_parent.nil?
+        current_parent
+      end
 
       ##
       # @param [::LightStep::Span] span
