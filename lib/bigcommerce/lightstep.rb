@@ -31,7 +31,7 @@ module Bigcommerce
     extend Configuration
 
     def self.start(component_name: nil, transport_factory: nil)
-      component_name ||= ::LightStep.component_name
+      component_name ||= ::Bigcommerce::Lightstep.component_name
       transport_factory ||= ::Bigcommerce::Lightstep::TransportFactory.new
       ::LightStep.logger = logger
       ::LightStep.configure(

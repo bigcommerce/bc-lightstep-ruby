@@ -24,13 +24,13 @@ module Bigcommerce
       #
       def build
         ::Bigcommerce::Lightstep::Transport.new(
-          host: ::LightStep.host,
-          port: ::LightStep.port.to_i,
-          verbose: ::LightStep.verbosity.to_i,
-          encryption: ::LightStep.port.to_i == 443 ? ::Bigcommerce::Lightstep::Transport::ENCRYPTION_TLS : ::Bigcommerce::Lightstep::Transport::ENCRYPTION_NONE,
-          ssl_verify_peer: ::LightStep.ssl_verify_peer,
-          access_token: ::LightStep.access_token,
-          logger: ::LightStep.logger
+          host: ::Bigcommerce::Lightstep.host,
+          port: ::Bigcommerce::Lightstep.port.to_i,
+          verbose: ::Bigcommerce::Lightstep.verbosity.to_i,
+          encryption: ::Bigcommerce::Lightstep.port.to_i == 443 ? ::Bigcommerce::Lightstep::Transport::ENCRYPTION_TLS : ::Bigcommerce::Lightstep::Transport::ENCRYPTION_NONE,
+          ssl_verify_peer: ::Bigcommerce::Lightstep.ssl_verify_peer,
+          access_token: ::Bigcommerce::Lightstep.access_token,
+          logger: ::Bigcommerce::Lightstep.logger
         )
       end
     end
