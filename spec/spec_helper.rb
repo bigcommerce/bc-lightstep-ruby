@@ -16,6 +16,7 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require_relative 'simplecov_helper'
 require 'pry'
+require 'null_logger'
 require 'bigcommerce/lightstep'
 
 Dir["#{File.join(File.dirname(__FILE__), 'support')}/**/*.rb"].each {|f| require f }

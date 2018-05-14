@@ -15,8 +15,10 @@
 #
 require 'lightstep'
 require_relative 'lightstep/version'
+require_relative 'lightstep/errors'
 require_relative 'lightstep/configuration'
 require_relative 'lightstep/tracer'
+require_relative 'lightstep/transport_factory'
 require_relative 'lightstep/transport'
 
 ##
@@ -28,25 +30,19 @@ module Bigcommerce
   module Lightstep
     extend Configuration
 
-    def self.start
-      transport = ::Bigcommerce::Lightstep::Transport.new(
-        host: host,
-        port: port.to_i,
-        verbose: verbosity.to_i,
-        encryption: port.to_i == 443 ? ::Bigcommerce::Lightstep::Transport::ENCRYPTION_TLS : ::Bigcommerce::Lightstep::Transport::ENCRYPTION_NONE,
-        ssl_verify_peer: ssl_verify_peer,
-        access_token: access_token,
-        logger: logger
-      )
+    def self.start(component_name: nil, transport_factory: nil)
+      component_name ||= ::LightStep.component_name
+      transport_factory ||= ::Bigcommerce::Lightstep::TransportFactory.new
       ::LightStep.logger = logger
       ::LightStep.configure(
         component_name: component_name,
-        transport: transport
+        transport: transport_factory.build
       )
     end
   end
 end
 
+# :nocov:
 module LightStep
   ##
   # Monkey patch of the LightStep library to make it not swallow reporting errors
@@ -91,3 +87,4 @@ module LightStep
     end
   end
 end
+# :nocov:

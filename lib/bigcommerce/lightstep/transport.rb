@@ -1,3 +1,18 @@
+# Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+# persons to whom the Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
 require 'net/http'
 require 'lightstep/transport/base'
 require 'logger'
@@ -8,13 +23,14 @@ module Bigcommerce
     # It is thread-safe, however it is *not* fork-safe. When forking, all items
     # in the queue will be copied and sent in duplicate.
     class Transport < ::LightStep::Transport::Base
-      LIGHTSTEP_HOST = 'collector.lightstep.com'.freeze
-      LIGHTSTEP_PORT = 443
-
-      REPORTS_API_ENDPOINT = '/api/v0/reports'.freeze
+      class InvalidAccessTokenError < StandardError; end
 
       ENCRYPTION_TLS = 'tls'.freeze
       ENCRYPTION_NONE = 'none'.freeze
+      HEADER_ACCESS_TOKEN = 'LightStep-Access-Token'.freeze
+      LIGHTSTEP_HOST = 'collector.lightstep.com'.freeze
+      LIGHTSTEP_PORT = 443
+      REPORTS_API_ENDPOINT = '/api/v0/reports'.freeze
 
       # Initialize the transport
       # @param host [String] host of the domain to the endpoind to push data
@@ -47,13 +63,18 @@ module Bigcommerce
         @continue_timeout = continue_timeout
         @keep_alive_timeout = keep_alive_timeout.to_i
 
-        raise ::LightStep::Tracer::ConfigurationError, 'access_token must be a string' unless access_token.is_a?(String)
-        raise ::LightStep::Tracer::ConfigurationError, 'access_token cannot be blank'  if access_token.empty?
+        raise ::Bigcommerce::Lightstep::Errors::InvalidAccessToken, 'access_token must be a string' unless access_token.is_a?(String)
+        raise ::Bigcommerce::Lightstep::Errors::InvalidAccessToken, 'access_token cannot be blank'  if access_token.empty?
         @access_token = access_token.to_s
         @logger = logger || ::Logger.new(STDOUT)
       end
 
+      ##
       # Queue a report for sending
+      #
+      # @param [Hash] report
+      # @return [NilClass]
+      #
       def report(report)
         @logger.info report if @verbose >= 3
 
@@ -73,7 +94,7 @@ module Bigcommerce
       #
       def build_request(report)
         req = Net::HTTP::Post.new(REPORTS_API_ENDPOINT)
-        req['LightStep-Access-Token'] = @access_token
+        req[HEADER_ACCESS_TOKEN] = @access_token
         req['Content-Type'] = 'application/json'
         req['Connection'] = 'keep-alive'
         req.body = report.to_json

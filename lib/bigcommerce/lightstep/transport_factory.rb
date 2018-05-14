@@ -13,14 +13,26 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source 'https://rubygems.org'
-
-gem 'null-logger', require: 'null_logger'
-
-group :development do
-  gem 'bundler-audit'
-  gem 'rubocop'
-  gem 'simplecov', require: false
+module Bigcommerce
+  module Lightstep
+    ##
+    # Build transports for the lightstep connection
+    #
+    class TransportFactory
+      ##
+      # @return [::Bigcommerce::Lightstep::Transport]
+      #
+      def build
+        ::Bigcommerce::Lightstep::Transport.new(
+          host: ::LightStep.host,
+          port: ::LightStep.port.to_i,
+          verbose: ::LightStep.verbosity.to_i,
+          encryption: ::LightStep.port.to_i == 443 ? ::Bigcommerce::Lightstep::Transport::ENCRYPTION_TLS : ::Bigcommerce::Lightstep::Transport::ENCRYPTION_NONE,
+          ssl_verify_peer: ::LightStep.ssl_verify_peer,
+          access_token: ::LightStep.access_token,
+          logger: ::LightStep.logger
+        )
+      end
+    end
+  end
 end
-
-gemspec

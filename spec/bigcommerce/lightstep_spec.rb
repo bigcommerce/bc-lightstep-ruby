@@ -13,14 +13,27 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source 'https://rubygems.org'
+require 'spec_helper'
 
-gem 'null-logger', require: 'null_logger'
+describe Bigcommerce::Lightstep do
+  let(:access_token) { 'abcd' }
+  let(:transport) { ::Bigcommerce::Lightstep::Transport.new(access_token: access_token) }
+  let(:transport_factory) { ::Bigcommerce::Lightstep::TransportFactory.new }
+  let(:component_name) { 'foo' }
 
-group :development do
-  gem 'bundler-audit'
-  gem 'rubocop'
-  gem 'simplecov', require: false
+  describe '#start' do
+    subject { described_class.start(transport_factory: transport_factory, component_name: component_name) }
+
+    before do
+      allow(transport_factory).to receive(:build).and_return(transport)
+    end
+
+    it 'should properly configure lightstep' do
+      expect(::LightStep).to receive(:configure).with(
+        component_name: component_name,
+        transport: transport
+      )
+      subject
+    end
+  end
 end
-
-gemspec

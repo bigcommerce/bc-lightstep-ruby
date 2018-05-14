@@ -13,14 +13,11 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source 'https://rubygems.org'
-
-gem 'null-logger', require: 'null_logger'
-
-group :development do
-  gem 'bundler-audit'
-  gem 'rubocop'
-  gem 'simplecov', require: false
+module Bigcommerce
+  module Lightstep
+    module Errors
+      class Error < StandardError; end
+      class InvalidAccessToken < Error; end
+    end
+  end
 end
-
-gemspec
