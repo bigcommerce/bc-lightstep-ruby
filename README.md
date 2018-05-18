@@ -48,6 +48,14 @@ bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd 
 
 Most BC systems will only need to customize the component name.
 
+### Instrumenting Rails Controllers
+
+Just drop this include into ApplicationController:
+
+```ruby
+include Bigcommerce::Lightstep::RailsControllerInstrumentation
+```
+
 ## License
 
 Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved 

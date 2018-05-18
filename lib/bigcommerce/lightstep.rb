@@ -20,6 +20,7 @@ require_relative 'lightstep/configuration'
 require_relative 'lightstep/tracer'
 require_relative 'lightstep/transport_factory'
 require_relative 'lightstep/transport'
+require_relative 'lightstep/rails_controller_instrumentation'
 
 ##
 # Main base module
