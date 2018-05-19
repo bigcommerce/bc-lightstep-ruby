@@ -65,10 +65,19 @@ module Bigcommerce
       end
 
       ##
+      # Return the active span
+      #
       # @return [::LightStep::Span|NilClass]
       #
       def active_span
         Thread.current[:lightstep_active_span]
+      end
+
+      ##
+      # Clear the active span
+      #
+      def clear_active_span!
+        Thread.current[:lightstep_active_span] = nil
       end
 
       private
