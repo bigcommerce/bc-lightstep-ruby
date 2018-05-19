@@ -16,7 +16,8 @@ module Bigcommerce
       def lightstep_trace
         key = "#{controller_name}.#{action_name}"
         headers = request.headers.to_h.except('HTTP_COOKIE')
-        result = ::Bigcommerce::Lightstep::Tracer.instance.start_span(key, context: headers) do |span|
+        tracer = ::Bigcommerce::Lightstep::Tracer.instance
+        result = tracer.instance.start_span(key, context: headers) do |span|
           span.set_tag('controller.name', controller_name)
           span.set_tag('action.name', action_name)
           yield
