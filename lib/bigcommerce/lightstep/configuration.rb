@@ -22,6 +22,7 @@ module Bigcommerce
     module Configuration
       VALID_CONFIG_KEYS = {
         component_name: '',
+        controller_trace_prefix: 'controllers.',
         access_token: '',
         host: 'lightstep-collector.linkerd',
         port: 4140,
