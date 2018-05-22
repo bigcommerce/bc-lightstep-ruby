@@ -1,5 +1,9 @@
 Changelog for the bc-lightstep-ruby gem.
 
+h3. 1.0.5
+
+- Do not send GET params in rails controller instrumentation for http.url tag
+
 h3. 1.0.4
 
 - Rename span tags to fit the BigCommerce standardized tags

@@ -24,7 +24,7 @@ module Bigcommerce
         result = tracer.start_span(key, context: headers) do |span|
           span.set_tag('controller.name', controller_name)
           span.set_tag('action.name', action_name)
-          span.set_tag('http.url', request.original_url)
+          span.set_tag('http.url', request.original_url.split('?').first)
           span.set_tag('http.method', request.method)
           span.set_tag('http.content_type', request.format)
           span.set_tag('http.host', request.host)
