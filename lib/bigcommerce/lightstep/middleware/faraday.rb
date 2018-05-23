@@ -48,7 +48,6 @@ module Bigcommerce
                 span.set_tag('error', true) if response_env[:status].to_i >= HTTP_ERROR_STATUS_THRESHOLD
                 response_env
               end
-
             rescue Net::ReadTimeout
               span.set_tag('error', true)
               span.set_tag('http.status_code', HTTP_STATUS_REQUEST_TIMEOUT)

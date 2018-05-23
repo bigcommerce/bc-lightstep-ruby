@@ -15,8 +15,8 @@
 #
 source 'https://rubygems.org'
 
-gem 'null-logger', require: 'null_logger'
 gem 'faraday'
+gem 'null-logger', require: 'null_logger'
 
 group :development do
   gem 'bundler-audit'

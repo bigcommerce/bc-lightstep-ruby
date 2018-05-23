@@ -56,6 +56,22 @@ Just drop this include into ApplicationController:
 include Bigcommerce::Lightstep::RailsControllerInstrumentation
 ```
 
+### Faraday Middleware
+
+To use the supplied faraday middleware, simply:
+
+```ruby
+require 'bigcommerce/lightstep/middleware/faraday'
+
+Faraday.new do |faraday|
+  faraday.use Bigcommerce::Lightstep::Middleware::Faraday, 'name-of-external-service'
+end
+```
+
+Spans will be built with the external service name. It's generally _not_ a good idea to use the Faraday adapter
+with internal services that are also instrumented with LightStep - use the Faraday adapter on external services
+or systems outside of our instrumenting control. 
+
 ## License
 
 Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved 
