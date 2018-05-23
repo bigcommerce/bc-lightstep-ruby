@@ -15,7 +15,6 @@
 #
 source 'https://rubygems.org'
 
-gem 'faraday'
 gem 'null-logger', require: 'null_logger'
 
 group :development do

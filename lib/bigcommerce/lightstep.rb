@@ -21,6 +21,7 @@ require_relative 'lightstep/tracer'
 require_relative 'lightstep/transport_factory'
 require_relative 'lightstep/transport'
 require_relative 'lightstep/rails_controller_instrumentation'
+require_relative 'lightstep/middleware/faraday'
 
 ##
 # Main base module
