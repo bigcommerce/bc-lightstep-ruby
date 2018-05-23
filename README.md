@@ -61,8 +61,6 @@ include Bigcommerce::Lightstep::RailsControllerInstrumentation
 To use the supplied faraday middleware, simply:
 
 ```ruby
-require 'bigcommerce/lightstep/middleware/faraday'
-
 Faraday.new do |faraday|
   faraday.use Bigcommerce::Lightstep::Middleware::Faraday, 'name-of-external-service'
 end
