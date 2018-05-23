@@ -1,5 +1,9 @@
 Changelog for the bc-lightstep-ruby gem.
 
+h3. 1.1.1
+
+- Fix issues where Rack/Rails is prepending HTTP_ to headers, ensure right key format into carrier
+
 h3. 1.1.0
 
 - Add Faraday middleware for automatic tracing of outbound service calls

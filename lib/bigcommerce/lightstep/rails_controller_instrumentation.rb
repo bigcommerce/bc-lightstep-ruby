@@ -19,7 +19,7 @@ module Bigcommerce
       def lightstep_trace
         prefix = ::Bigcommerce::Lightstep.controller_trace_prefix
         key = "#{prefix}#{controller_name}.#{action_name}"
-        headers = request.headers.to_h.except('HTTP_COOKIE')
+        headers = lightstep_filtered_headers
         tracer = ::Bigcommerce::Lightstep::Tracer.instance
         result = tracer.start_span(key, context: headers) do |span|
           span.set_tag('controller.name', controller_name)
@@ -44,6 +44,24 @@ module Bigcommerce
         end
         tracer.clear_active_span!
         result
+      end
+
+      ##
+      # Get only the opentracing headers
+      #
+      # @return [Hash]
+      #
+      def lightstep_filtered_headers
+        filtered_ot_headers = {}
+        headers = request.headers.to_h
+        ot_header_keys = %w[ot-tracer-traceid ot-tracer-spanid ot-tracer-sampled]
+
+        headers.each do |k, v|
+          fk = k.to_s.downcase.gsub('http_', '').tr('_', '-')
+          next unless ot_header_keys.include?(fk)
+          filtered_ot_headers[fk] = v
+        end
+        filtered_ot_headers
       end
     end
   end

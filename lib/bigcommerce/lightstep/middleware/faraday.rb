@@ -35,6 +35,7 @@ module Bigcommerce
         def call(request_env)
           uri = uri_from_env(request_env)
           tracer = ::Bigcommerce::Lightstep::Tracer.instance
+
           tracer.start_span(service_key, context: request_env[:request_headers]) do |span|
             span.set_tag('http.url', uri.to_s.split('?').first)
             span.set_tag('http.method', request_env[:method].to_s.downcase)
@@ -48,15 +49,15 @@ module Bigcommerce
                 span.set_tag('error', true) if response_env[:status].to_i >= HTTP_ERROR_STATUS_THRESHOLD
                 response_env
               end
-            rescue Net::ReadTimeout
+            rescue ::Net::ReadTimeout
               span.set_tag('error', true)
               span.set_tag('http.status_code', HTTP_STATUS_REQUEST_TIMEOUT)
               raise
-            rescue Faraday::ConnectionFailed
+            rescue ::Faraday::ConnectionFailed
               span.set_tag('error', true)
               span.set_tag('http.status_code', HTTP_STATUS_SERVICE_UNAVAIL)
               raise
-            rescue Faraday::ClientError
+            rescue ::Faraday::ClientError
               span.set_tag('error', true)
               span.set_tag('http.status_code', HTTP_STATUS_INTERNAL_ERROR)
               raise
@@ -74,9 +75,9 @@ module Bigcommerce
         #
         def inject_ot_tags!(request_env, span)
           request_env[:request_headers].merge!(
-            OT_TAG_TRACE_ID => span.span_context.trace_id,
-            OT_TAG_SPAN_ID  => span.span_context.id,
-            OT_TAG_SAMPLED  => true
+            OT_TAG_TRACE_ID => span.span_context.trace_id.to_s,
+            OT_TAG_SPAN_ID  => span.span_context.id.to_s,
+            OT_TAG_SAMPLED  => 'true'
           )
         end
 
