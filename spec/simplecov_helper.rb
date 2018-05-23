@@ -22,7 +22,7 @@ if File.directory?('./coverage/')
 end
 
 SimpleCov.command_name 'Unit Tests'
-SimpleCov.minimum_coverage 70
+SimpleCov.minimum_coverage 40
 SimpleCov.start do
   add_filter '/bin/'
   add_filter '/coverage/'
