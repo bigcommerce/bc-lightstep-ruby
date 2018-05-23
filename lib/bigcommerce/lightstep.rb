@@ -14,6 +14,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 require 'lightstep'
+require 'faraday'
 require_relative 'lightstep/version'
 require_relative 'lightstep/errors'
 require_relative 'lightstep/configuration'
