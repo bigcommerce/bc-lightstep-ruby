@@ -1,5 +1,9 @@
 Changelog for the bc-lightstep-ruby gem.
 
+h3. 1.1.2
+
+- Prevent span from starting if the reporter is not yet configured, as LightStep gem does not guard this case 
+
 h3. 1.1.1
 
 - Fix issues where Rack/Rails is prepending HTTP_ to headers, ensure right key format into carrier

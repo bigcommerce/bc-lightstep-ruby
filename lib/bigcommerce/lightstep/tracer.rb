@@ -36,6 +36,9 @@ module Bigcommerce
       # @param [Hash] tags (Optional)
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
+        # LightStep's underlying gem doesn't check reporter initialization, so we need to protect here
+        return unless tracer.instance_variable_defined?(:@reporter) && !tracer.instance_variable_get(:@reporter).nil?
+
         # enable the tracer (for fork support)
         tracer.enable
 
