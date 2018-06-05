@@ -36,9 +36,6 @@ module Bigcommerce
       # @param [Hash] tags (Optional)
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
-        # LightStep's underlying gem doesn't check reporter initialization, so we need to protect here
-        return unless tracer.instance_variable_defined?(:@reporter) && !tracer.instance_variable_get(:@reporter).nil?
-
         # enable the tracer (for fork support)
         tracer.enable
 
@@ -57,8 +54,8 @@ module Bigcommerce
         # run the process
         result = yield span
 
-        # finish this span
-        span.finish
+        # finish this span if the reporter is initialized
+        span.finish if reporter_initialized?
 
         # now set back the parent as the active span
         self.active_span = last_active_span
@@ -81,6 +78,13 @@ module Bigcommerce
       #
       def clear_active_span!
         Thread.current[:lightstep_active_span] = nil
+      end
+
+      ##
+      # @return [Boolean]
+      #
+      def reporter_initialized?
+        tracer.instance_variable_defined?(:@reporter) && !tracer.instance_variable_get(:@reporter).nil?
       end
 
       private
