@@ -32,7 +32,9 @@ module Bigcommerce
         continue_timeout: nil,
         keep_alive_timeout: 2,
         logger: nil,
-        verbosity: 1
+        verbosity: 1,
+        http1_error_code: 500,
+        http1_error_code_minimum: 500
       }.freeze
 
       attr_accessor *VALID_CONFIG_KEYS.keys

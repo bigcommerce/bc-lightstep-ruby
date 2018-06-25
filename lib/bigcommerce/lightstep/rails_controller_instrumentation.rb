@@ -4,8 +4,7 @@ module Bigcommerce
     # Helper module that can be included into Rails controllers to automatically instrument them with LightStep
     #
     module RailsControllerInstrumentation
-      LIGHTSTEP_H1_ERROR_CODE = 500
-      LIGHTSTEP_H1_ERROR_CODE_MIN = 400
+      OPEN_TRACING_HEADER_KEYS = %w[ot-tracer-traceid ot-tracer-spanid ot-tracer-sampled].freeze
 
       def self.included(base)
         base.send(:around_action, :lightstep_trace)
@@ -32,14 +31,14 @@ module Bigcommerce
             resp = yield
           rescue StandardError => _
             span.set_tag('error', true)
-            span.set_tag('http.status_code', LIGHTSTEP_H1_ERROR_CODE)
+            span.set_tag('http.status_code', Bigcommerce::Lightstep.http1_error_code)
             tracer.clear_active_span!
             span.finish
             raise # re-raise the error
           end
           span.set_tag('http.status_code', response.status)
           # 400+ HTTP status codes are errors: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-          span.set_tag('error', true) if response.status >= LIGHTSTEP_H1_ERROR_CODE_MIN
+          span.set_tag('error', true) if response.status >= Bigcommerce::Lightstep.http1_error_code_minimum
           resp
         end
         tracer.clear_active_span!
@@ -47,18 +46,16 @@ module Bigcommerce
       end
 
       ##
-      # Get only the opentracing headers
+      # Get only the open tracing headers
       #
       # @return [Hash]
       #
       def lightstep_filtered_headers
         filtered_ot_headers = {}
         headers = request.headers.to_h
-        ot_header_keys = %w[ot-tracer-traceid ot-tracer-spanid ot-tracer-sampled]
-
         headers.each do |k, v|
           fk = k.to_s.downcase.gsub('http_', '').tr('_', '-')
-          next unless ot_header_keys.include?(fk)
+          next unless OPEN_TRACING_HEADER_KEYS.include?(fk)
           filtered_ot_headers[fk] = v
         end
         filtered_ot_headers

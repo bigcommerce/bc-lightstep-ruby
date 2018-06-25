@@ -1,5 +1,9 @@
 Changelog for the bc-lightstep-ruby gem.
 
+h3. 1.1.3
+
+- Have http1 errors only flag as error if they are 500+ status codes
+
 h3. 1.1.2
 
 - Prevent span from starting if the reporter is not yet configured, as LightStep gem does not guard this case 
