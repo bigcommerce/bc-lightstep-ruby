@@ -1,5 +1,9 @@
 Changelog for the bc-lightstep-ruby gem.
 
+h3. 1.1.4
+
+- Add enabled setting to explicitly disable lightstep at runtime. Can be toggled with LIGHTSTEP_ENABLED ENV var.
+
 h3. 1.1.3
 
 - Have http1 errors only flag as error if they are 500+ status codes
