@@ -39,6 +39,7 @@ bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd 
 
 | Name | Description |
 | ---- | ----------- |
+| LIGHTSTEP_ENABLED | Flag to determine whether to broadcast spans. Defaults to 1 (enabled) and 0 will disable.|
 | LIGHTSTEP_COMPONENT_NAME | The component name to use |
 | LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector |
 | LIGHTSTEP_HOST | Host of the collector. Defaults to `lightstep-collector.linkerd` |

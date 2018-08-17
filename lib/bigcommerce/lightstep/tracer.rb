@@ -36,8 +36,14 @@ module Bigcommerce
       # @param [Hash] tags (Optional)
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
-        # enable the tracer (for fork support)
-        tracer.enable
+        if Bigcommerce::Lightstep.enabled
+          # enable the tracer (for fork support)
+          tracer.enable
+        elsif tracer.enabled?
+          # We are not enabled and the tracer is currently on
+          # https://github.com/lightstep/lightstep-tracer-ruby/blob/master/lib/lightstep/tracer.rb#L129-L130
+          tracer.disable(discard: true)
+        end
 
         # find the currently active span
         last_active_span = active_span
