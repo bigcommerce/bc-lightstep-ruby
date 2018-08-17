@@ -34,7 +34,8 @@ module Bigcommerce
         logger: nil,
         verbosity: 1,
         http1_error_code: 500,
-        http1_error_code_minimum: 500
+        http1_error_code_minimum: 500,
+        enabled: true
       }.freeze
 
       attr_accessor *VALID_CONFIG_KEYS.keys
@@ -92,6 +93,7 @@ module Bigcommerce
         self.ssl_verify_peer = ENV.fetch('LIGHTSTEP_SSL_VERIFY_PEER', true)
         self.verbosity = ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i
         self.logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
+        self.enabled = ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i > 0
       end
 
       ##
