@@ -1,5 +1,9 @@
 Changelog for the bc-lightstep-ruby gem.
 
+h3. 1.1.5
+
+- Pin lightstep gem to 0.11.x due to backwards-incompatible change in 0.12.x
+ 
 h3. 1.1.4
 
 - Add enabled setting to explicitly disable lightstep at runtime. Can be toggled with LIGHTSTEP_ENABLED ENV var.
