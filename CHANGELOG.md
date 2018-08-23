@@ -1,5 +1,9 @@
 Changelog for the bc-lightstep-ruby gem.
 
+h3. Pending Release
+
+
+
 h3. 1.1.5
 
 - Pin lightstep gem to 0.11.x due to backwards-incompatible change in 0.12.x
