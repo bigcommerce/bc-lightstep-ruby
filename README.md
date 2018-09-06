@@ -48,7 +48,7 @@ bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd 
 | LIGHTSTEP_SSL_VERIFY_PEER | If using 443 as the port, toggle SSL verification. Defaults to true. |
 | LIGHTSTEP_VERBOSITY | The verbosity level of lightstep logs. Defaults to 1. |
 
-Most BC systems will only need to customize the component name.
+Most systems will only need to customize the component name.
 
 ### Instrumenting Rails Controllers
 
@@ -70,7 +70,7 @@ end
 
 Spans will be built with the external service name. It's generally _not_ a good idea to use the Faraday adapter
 with internal services that are also instrumented with LightStep - use the Faraday adapter on external services
-or systems outside of our instrumenting control. 
+or systems outside of your instrumenting control. 
 
 ## License
 
