@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.com/bigcommerce/bc-lightstep-ruby.svg?token=D3Cc4LCF9BgpUx4dpPpv&branch=master)](https://travis-ci.com/bigcommerce/bc-lightstep-ruby)
 
-Adds [LightStep](https://lightstep.com) tracing support for Ruby.
+Adds [LightStep](https://lightstep.com) tracing support for Ruby. This is an extension of the 
+[LightStep ruby gem](https://github.com/lightstep/lightstep-tracer-ruby) and adds extra functionality and resiliency.
 
 ## Installation
 
