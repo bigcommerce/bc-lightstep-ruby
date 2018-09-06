@@ -8,7 +8,7 @@ Adds [LightStep](https://lightstep.com) tracing support for Ruby. This is an ext
 ## Installation
 
 ```ruby
-gem 'bc-lightstep-ruby', git: 'git@github.com/bigcommerce/bc-lightstep-ruby'
+gem 'bc-lightstep-ruby'
 ```
 
 Then in an initializer or before use:
