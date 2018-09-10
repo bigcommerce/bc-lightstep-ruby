@@ -56,6 +56,7 @@ module Bigcommerce
         headers.each do |k, v|
           fk = k.to_s.downcase.gsub('http_', '').tr('_', '-')
           next unless OPEN_TRACING_HEADER_KEYS.include?(fk)
+
           filtered_ot_headers[fk] = v
         end
         filtered_ot_headers

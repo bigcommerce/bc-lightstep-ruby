@@ -47,8 +47,8 @@ module Bigcommerce
         verbose: 0,
         encryption: ENCRYPTION_TLS,
         ssl_verify_peer: true,
-        open_timeout: 20,
-        read_timeout: 20,
+        open_timeout: 2,
+        read_timeout: 2,
         continue_timeout: nil,
         keep_alive_timeout: 2,
         logger: nil
@@ -64,7 +64,9 @@ module Bigcommerce
         @keep_alive_timeout = keep_alive_timeout.to_i
 
         raise ::Bigcommerce::Lightstep::Errors::InvalidAccessToken, 'access_token must be a string' unless access_token.is_a?(String)
+
         raise ::Bigcommerce::Lightstep::Errors::InvalidAccessToken, 'access_token cannot be blank'  if access_token.empty?
+
         @access_token = access_token.to_s
         @logger = logger || ::Logger.new(STDOUT)
       end
