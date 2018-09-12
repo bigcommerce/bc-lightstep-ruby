@@ -58,13 +58,18 @@ module Bigcommerce
         self.active_span = span
 
         # run the process
-        result = yield span
+        begin
+          result = yield span
+        rescue StandardError
+          span.set_tag('error', true)
+          raise
+        ensure
+          # finish this span if the reporter is initialized
+          span.finish if reporter_initialized?
 
-        # finish this span if the reporter is initialized
-        span.finish if reporter_initialized?
-
-        # now set back the parent as the active span
-        self.active_span = last_active_span
+          # now set back the parent as the active span
+          self.active_span = last_active_span
+        end
 
         # return result
         result
