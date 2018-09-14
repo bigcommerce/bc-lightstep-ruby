@@ -2,6 +2,12 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.1.7
+
+- Better handling of exceptions and tagged errors
+- Lower timeouts for collector connections to reduce impact if collector is down/unreachable
+- Always ensure spans are reported even in the case of exceptional failure 
+
 h3. 1.1.6
 
 - First OSS release
