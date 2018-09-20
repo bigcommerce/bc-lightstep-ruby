@@ -18,6 +18,9 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Max: 24
 
+Metrics/PerceivedComplexity:
+  Max: 10
+
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes.
 # URISchemes: http, https
 Metrics/LineLength:

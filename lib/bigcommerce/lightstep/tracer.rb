@@ -36,13 +36,17 @@ module Bigcommerce
       # @param [Hash] tags (Optional)
       #
       def start_span(name, context: nil, start_time: nil, tags: nil)
-        if Bigcommerce::Lightstep.enabled
+        if enabled?
           # enable the tracer (for fork support)
           tracer.enable
-        elsif tracer.enabled?
+        elsif tracer && tracer.enabled?
           # We are not enabled and the tracer is currently on
           # https://github.com/lightstep/lightstep-tracer-ruby/blob/master/lib/lightstep/tracer.rb#L129-L130
-          tracer.disable(discard: true)
+          # we have to set this through instance_variable_set because of a bug in the core lightstep gem which
+          # assumes the presence of a reporter, which happens in the initializer, which may not be called
+          # because the reporter attempts to flush spans on initialization (which is bad if lightstep isn't
+          # present)
+          tracer.instance_variable_set(:@enabled, false)
         end
 
         # find the currently active span
@@ -65,7 +69,7 @@ module Bigcommerce
           raise
         ensure
           # finish this span if the reporter is initialized
-          span.finish if reporter_initialized?
+          span.finish if enabled? && reporter_initialized?
 
           # now set back the parent as the active span
           self.active_span = last_active_span
@@ -98,6 +102,13 @@ module Bigcommerce
         tracer.instance_variable_defined?(:@reporter) && !tracer.instance_variable_get(:@reporter).nil?
       end
 
+      ##
+      # @return [Boolean]
+      #
+      def enabled?
+        Bigcommerce::Lightstep.enabled
+      end
+
       private
 
       ##
@@ -108,7 +119,8 @@ module Bigcommerce
       #
       def determine_parent(context:)
         # first attempt to find parent from args, if not, use carrier (headers) to lookup parent
-        current_parent = context.is_a?(::LightStep::SpanContext) ? context : tracer.extract(::LightStep::Tracer::FORMAT_TEXT_MAP, context || {})
+        # 1 = FORMAT_TEXT_MAP (this constant is removed in future lightstep versions)
+        current_parent = context.is_a?(::LightStep::SpanContext) ? context : tracer.extract(1, context || {})
         # if no passed in parent, use the active thread parent
         current_parent = active_span if current_parent.nil?
         current_parent
