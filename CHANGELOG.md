@@ -2,6 +2,11 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.1.8
+
+- Handle issue that occurs if lightstep is disabled but the start_span method is still called
+- Remove FORMAT_TEXT_MAP reference as this is no longer present in later lightstep gem versions
+
 h3. 1.1.7
 
 - Better handling of exceptions and tagged errors
