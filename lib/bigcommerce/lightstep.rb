@@ -41,53 +41,9 @@ module Bigcommerce
         component_name: component_name,
         transport: transport_factory.build
       )
+      ::LightStep.instance.max_span_records = ::Bigcommerce::Lightstep.max_buffered_spans
+      ::LightStep.instance.max_log_records = ::Bigcommerce::Lightstep.max_log_records
+      ::LightStep.instance.report_period_seconds = ::Bigcommerce::Lightstep.max_reporting_interval_seconds
     end
   end
 end
-
-# :nocov:
-module LightStep
-  ##
-  # Monkey patch of the LightStep library to make it not swallow reporting errors
-  #
-  class Reporter
-    def flush
-      reset_on_fork
-
-      return if @span_records.empty?
-
-      now = ::LightStep.micros(Time.now)
-
-      span_records = @span_records.slice!(0, @span_records.length)
-      dropped_spans = 0
-      @dropped_spans.update do |old|
-        dropped_spans = old
-        0
-      end
-
-      report_request = {
-        runtime: @runtime,
-        oldest_micros: @report_start_time,
-        youngest_micros: now,
-        span_records: span_records,
-        internal_metrics: {
-          counts: [
-            { name: 'spans.dropped', int64_value: dropped_spans }
-          ]
-        }
-      }
-
-      @report_start_time = now
-
-      begin
-        @transport.report(report_request)
-      rescue StandardError => e
-        Bigcommerce::Lightstep.logger.error "Failed to send request to collector: #{e.message}"
-        # an error occurs, add the previous dropped_spans and count of spans
-        # that would have been recorded
-        @dropped_spans.increment(dropped_spans + span_records.length)
-      end
-    end
-  end
-end
-# :nocov:

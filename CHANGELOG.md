@@ -2,6 +2,11 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Bump lightstep gem to 0.13
+- Add LIGHTSTEP_MAX_BUFFERED_SPANS config ENV + setting for maximum number of spans to buffer
+- Add LIGHTSTEP_MAX_LOG_RECORDS config ENV + setting for maximum number of log records that can be on a span
+- Add LIGHTSTEP_MAX_REPORTING_INTERVAL_SECONDS config ENV + setting for max reporting flush interval to collector
+
 h3. 1.1.8
 
 - Handle issue that occurs if lightstep is disabled but the start_span method is still called

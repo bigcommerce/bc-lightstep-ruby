@@ -35,6 +35,9 @@ module Bigcommerce
         verbosity: 1,
         http1_error_code: 500,
         http1_error_code_minimum: 500,
+        max_buffered_spans: 1_000,
+        max_log_records: 1_000,
+        max_reporting_interval_seconds: 3.0,
         enabled: true
       }.freeze
 
@@ -91,6 +94,11 @@ module Bigcommerce
         self.host = ENV.fetch('LIGHTSTEP_HOST', 'lightstep-collector.linkerd')
         self.port = ENV.fetch('LIGHTSTEP_PORT', 4140).to_i
         self.ssl_verify_peer = ENV.fetch('LIGHTSTEP_SSL_VERIFY_PEER', true)
+
+        self.max_buffered_spans = ENV.fetch('LIGHTSTEP_MAX_BUFFERED_SPANS', 1_000).to_i
+        self.max_log_records = ENV.fetch('LIGHTSTEP_MAX_LOG_RECORDS', 1_000).to_i
+        self.max_reporting_interval_seconds = ENV.fetch('LIGHTSTEP_MAX_REPORTING_INTERVAL_SECONDS', 3.0).to_f
+
         self.verbosity = ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i
         self.logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
         self.enabled = ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i > 0

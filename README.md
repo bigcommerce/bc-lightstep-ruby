@@ -40,13 +40,16 @@ bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd 
 
 | Name | Description |
 | ---- | ----------- |
-| LIGHTSTEP_ENABLED | Flag to determine whether to broadcast spans. Defaults to 1 (enabled) and 0 will disable.|
-| LIGHTSTEP_COMPONENT_NAME | The component name to use |
-| LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector |
-| LIGHTSTEP_HOST | Host of the collector. Defaults to `lightstep-collector.linkerd` |
-| LIGHTSTEP_PORT | Port of the collector. Defaults to `4140` |
-| LIGHTSTEP_SSL_VERIFY_PEER | If using 443 as the port, toggle SSL verification. Defaults to true. |
-| LIGHTSTEP_VERBOSITY | The verbosity level of lightstep logs. Defaults to 1. |
+| LIGHTSTEP_ENABLED | Flag to determine whether to broadcast spans. Defaults to (1) enabled, 0 will disable.| 1 |
+| LIGHTSTEP_COMPONENT_NAME | The component name to use | '' | 
+| LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector | '' | 
+| LIGHTSTEP_HOST | Host of the collector. | `lightstep-collector.linkerd` |
+| LIGHTSTEP_PORT | Port of the collector. | `4140` |
+| LIGHTSTEP_SSL_VERIFY_PEER | If using 443 as the port, toggle SSL verification. | true |
+| LIGHTSTEP_MAX_BUFFERED_SPANS | The maximum number of spans to buffer before dropping. | `1_000` |
+| LIGHTSTEP_MAX_LOG_RECORDS | Maximum number of log records on a span to accept. | `1_000` |
+| LIGHTSTEP_MAX_REPORTING_INTERVAL_SECONDS | The maximum number of seconds to wait before flushing the report to the collector. | 3.0 |
+| LIGHTSTEP_VERBOSITY | The verbosity level of lightstep logs. | 1 |
 
 Most systems will only need to customize the component name.
 
