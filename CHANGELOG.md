@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.2.0
+
 - Bump lightstep gem to 0.13
 - Add LIGHTSTEP_MAX_BUFFERED_SPANS config ENV + setting for maximum number of spans to buffer
 - Add LIGHTSTEP_MAX_LOG_RECORDS config ENV + setting for maximum number of log records that can be on a span
