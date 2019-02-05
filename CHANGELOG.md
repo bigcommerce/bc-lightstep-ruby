@@ -2,6 +2,11 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.2.1
+
+- Fix issue where in Rails controllers before the action occurs that an uninitialized reporter would cause a
+  NoMethodError to occur (this most commonly occurs in test suites)
+
 h3. 1.2.0
 
 - Bump lightstep gem to 0.13
