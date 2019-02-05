@@ -76,8 +76,8 @@ module Bigcommerce
         def inject_ot_tags!(request_env, span)
           request_env[:request_headers].merge!(
             OT_TAG_TRACE_ID => span.context.trace_id.to_s,
-            OT_TAG_SPAN_ID  => span.context.id.to_s,
-            OT_TAG_SAMPLED  => 'true'
+            OT_TAG_SPAN_ID => span.context.id.to_s,
+            OT_TAG_SAMPLED => 'true'
           )
         end
 

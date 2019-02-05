@@ -33,7 +33,7 @@ module Bigcommerce
             span.set_tag('error', true)
             span.set_tag('http.status_code', Bigcommerce::Lightstep.http1_error_code)
             tracer.clear_active_span!
-            span.finish
+            span.finish if tracer.reporter_initialized? # only finish the span if we're actually reporting
             raise # re-raise the error
           end
           span.set_tag('http.status_code', response.status)
