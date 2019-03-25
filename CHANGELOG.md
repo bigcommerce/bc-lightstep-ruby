@@ -2,6 +2,10 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+
+
+h3. 1.2.2
+
 - Allow for usage of blank access tokens, which can be used with disabled token checking + project-specific satellites
 
 h3. 1.2.1
