@@ -4,10 +4,12 @@ cache:
 sudo: false
 dist: trusty
 rvm:
-  - 2.2
   - 2.4
   - 2.5
-before_install: gem install bundler -v 1.15.1
+bundler_args: --without production
+before_install:
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
 script: ./.travis.sh
 env:
   matrix:

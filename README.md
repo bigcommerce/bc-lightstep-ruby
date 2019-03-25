@@ -42,7 +42,7 @@ bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd 
 | ---- | ----------- |
 | LIGHTSTEP_ENABLED | Flag to determine whether to broadcast spans. Defaults to (1) enabled, 0 will disable.| 1 |
 | LIGHTSTEP_COMPONENT_NAME | The component name to use | '' | 
-| LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector | '' | 
+| LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector. Optional. | '' | 
 | LIGHTSTEP_HOST | Host of the collector. | `lightstep-collector.linkerd` |
 | LIGHTSTEP_PORT | Port of the collector. | `4140` |
 | LIGHTSTEP_SSL_VERIFY_PEER | If using 443 as the port, toggle SSL verification. | true |

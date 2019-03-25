@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Allow for usage of blank access tokens, which can be used with disabled token checking + project-specific satellites
+
 h3. 1.2.1
 
 - Fix issue where in Rails controllers before the action occurs that an uninitialized reporter would cause a
