@@ -36,21 +36,6 @@ describe Bigcommerce::Lightstep::Transport do
         expect(subject).to be_a(described_class)
       end
     end
-
-    context 'if the access token is not a string' do
-      let(:access_token) { 213 }
-
-      it 'should raise a ::Bigcommerce::Lightstep::Errors::InvalidAccessToken exception' do
-        expect { subject }.to raise_error(::Bigcommerce::Lightstep::Errors::InvalidAccessToken)
-      end
-    end
-
-    context 'if the access token is blank' do
-      let(:access_token) { '' }
-      it 'should raise a ::Bigcommerce::Lightstep::Errors::InvalidAccessToken exception' do
-        expect { subject }.to raise_error(::Bigcommerce::Lightstep::Errors::InvalidAccessToken)
-      end
-    end
   end
 
   describe '.report' do

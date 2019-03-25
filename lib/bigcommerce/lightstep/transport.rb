@@ -62,11 +62,6 @@ module Bigcommerce
         @read_timeout = read_timeout.to_i
         @continue_timeout = continue_timeout
         @keep_alive_timeout = keep_alive_timeout.to_i
-
-        raise ::Bigcommerce::Lightstep::Errors::InvalidAccessToken, 'access_token must be a string' unless access_token.is_a?(String)
-
-        raise ::Bigcommerce::Lightstep::Errors::InvalidAccessToken, 'access_token cannot be blank'  if access_token.empty?
-
         @access_token = access_token.to_s
         @logger = logger || ::Logger.new(STDOUT)
       end
@@ -96,7 +91,7 @@ module Bigcommerce
       #
       def build_request(report)
         req = Net::HTTP::Post.new(REPORTS_API_ENDPOINT)
-        req[HEADER_ACCESS_TOKEN] = @access_token
+        req[HEADER_ACCESS_TOKEN] = @access_token unless @access_token.to_s.empty?
         req['Content-Type'] = 'application/json'
         req['Connection'] = 'keep-alive'
         req.body = report.to_json
