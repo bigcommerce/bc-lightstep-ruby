@@ -23,6 +23,7 @@ require_relative 'lightstep/transport_factory'
 require_relative 'lightstep/transport'
 require_relative 'lightstep/rails_controller_instrumentation'
 require_relative 'lightstep/middleware/faraday'
+require_relative 'lightstep/redis/tracer'
 
 ##
 # Main base module
@@ -44,6 +45,8 @@ module Bigcommerce
       ::LightStep.instance.max_span_records = ::Bigcommerce::Lightstep.max_buffered_spans
       ::LightStep.instance.max_log_records = ::Bigcommerce::Lightstep.max_log_records
       ::LightStep.instance.report_period_seconds = ::Bigcommerce::Lightstep.max_reporting_interval_seconds
+
+      ::Bigcommerce::Lightstep::Redis::Wrapper.patch if ::Bigcommerce::Lightstep.enabled
     end
   end
 end
