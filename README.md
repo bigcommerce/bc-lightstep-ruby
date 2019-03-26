@@ -80,6 +80,12 @@ or systems outside of your instrumenting control.
 This gem will automatically detect and instrumnent Redis calls when they are made using the `Redis::Client` class.
 It will set as tags on the span the host, port, db instance, and the command (but no arguments). 
 
+Note that this will not record redis timings if they are a root span. This is to prevent trace spamming. You can 
+re-enable this by setting the `redis_allow_root_spans` configuration option to `true`.
+
+It also excludes `ping` commands, and you can provide a custom list by setting the `redis_excluded_commands` 
+configuration option to an array of commands to exclude.
+
 ## License
 
 Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved 

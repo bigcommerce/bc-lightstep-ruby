@@ -22,11 +22,9 @@ class TestRedisTracerCaller
 end
 
 describe Bigcommerce::Lightstep::Redis::Tracer do
-  let(:tracer) { described_class.new }
-
-  before do
-    allow(::Bigcommerce::Lightstep::Tracer).to receive(:instance).and_return(mock_tracer)
-  end
+  let(:allow_root_spans) { false }
+  let(:excluded_commands) { %w(ping) }
+  let(:tracer) { described_class.new(tracer: mock_tracer, allow_root_spans: allow_root_spans, excluded_commands: excluded_commands) }
 
   describe '.trace' do
     let(:key) { 'redis.get' }
@@ -54,6 +52,66 @@ describe Bigcommerce::Lightstep::Redis::Tracer do
         expect(caller).to receive(:foo).once
 
         subject
+      end
+
+      context 'if the redis command is excluded' do
+        let(:statement) { 'ping' }
+
+        it 'should not trace the result' do
+          expect(mock_tracer).to_not receive(:start_span)
+
+          expect(caller).to receive(:foo).once
+
+          subject
+        end
+      end
+
+      context 'if allowing root spans is disabled' do
+        let(:allow_root_spans) { false }
+
+        context 'and there is no active span' do
+          before do
+            allow(mock_tracer).to receive(:active_span).and_return(nil)
+          end
+
+          it 'should not trace the result' do
+            expect(mock_tracer).to_not receive(:start_span)
+            expect(caller).to receive(:foo).once
+            subject
+          end
+        end
+
+        context 'and there is a root span' do
+          it 'should trace the result' do
+            expect(mock_tracer).to receive(:start_span).and_call_original
+            expect(caller).to receive(:foo).once
+            subject
+          end
+        end
+      end
+
+      context 'if allowing root spans is enabled' do
+        let(:allow_root_spans) { true }
+
+        context 'and there is no active span' do
+          before do
+            allow(mock_tracer).to receive(:active_span).and_return(nil)
+          end
+
+          it 'should trace the result' do
+            expect(mock_tracer).to receive(:start_span).and_call_original
+            expect(caller).to receive(:foo).once
+            subject
+          end
+        end
+
+        context 'and there is a root span' do
+          it 'should trace the result' do
+            expect(mock_tracer).to receive(:start_span).and_call_original
+            expect(caller).to receive(:foo).once
+            subject
+          end
+        end
       end
     end
 

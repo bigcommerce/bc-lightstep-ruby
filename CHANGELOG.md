@@ -2,6 +2,11 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.3.1
+
+- Add various options to suppress redis trace spam
+- Fix issue with pipeline commands in redis instrumentation
+
 h3. 1.3.0
 
 - Adds automatic Redis instrumentation support

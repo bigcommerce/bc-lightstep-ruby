@@ -25,6 +25,10 @@ module Bigcommerce
         @span ||= Bigcommerce::Lightstep::MockSpan.new
       end
 
+      def active_span
+        @active_span ||= Bigcommerce::Lightstep::MockSpan.new
+      end
+
       def clear_active_span!
         true
       end

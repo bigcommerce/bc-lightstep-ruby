@@ -16,6 +16,7 @@
 source 'https://rubygems.org'
 
 gem 'null-logger', require: 'null_logger'
+gem 'redis', '~> 4'
 
 group :development do
   gem 'bundler-audit'

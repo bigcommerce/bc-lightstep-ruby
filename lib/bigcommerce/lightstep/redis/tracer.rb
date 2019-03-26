@@ -22,6 +22,23 @@ module Bigcommerce
       # Middleware tracer for Redis clients
       #
       class Tracer
+        attr_accessor :tracer
+
+        ##
+        # @param [Bigcommerce::Lightstep::Tracer] tracer
+        # @param [Array<String>] excluded_commands
+        # @param [Boolean] allow_root_spans
+        #
+        def initialize(
+          tracer: nil,
+          excluded_commands: nil,
+          allow_root_spans: nil
+        )
+          @tracer = tracer || ::Bigcommerce::Lightstep::Tracer.instance
+          @excluded_commands = excluded_commands || ::Bigcommerce::Lightstep.redis_excluded_commands
+          @allow_root_spans = allow_root_spans.nil? ? ::Bigcommerce::Lightstep.redis_allow_root_spans : allow_root_spans
+        end
+
         ##
         # @param [String] key
         # @param [String] statement
@@ -30,17 +47,26 @@ module Bigcommerce
         # @param [Integer] port
         #
         def trace(key:, statement:, instance:, host:, port:)
-          return yield unless tracer
+          return yield unless @tracer
+
+          # only take the command, not any arguments
+          command = statement.to_s.split(' ').first
+
+          # skip excluded commands
+          return yield if excluded?(command.to_s)
+
+          # skip if not allowing root spans and there is no active span
+          return yield if !@allow_root_spans && !active_span?
 
           tags = {
             'db.type' => 'redis',
-            'db.statement' => statement.to_s.split(' ').first, # only take the command, not any arguments
+            'db.statement' => command,
             'db.instance' => instance,
             'db.host' => "redis://#{host}:#{port}",
             'span.kind' => 'client'
           }
 
-          tracer.start_span(key) do |span|
+          @tracer.start_span(key) do |span|
             tags.each do |k, v|
               span.set_tag(k, v)
             end
@@ -55,10 +81,18 @@ module Bigcommerce
         end
 
         ##
-        # @return [::Bigcommerce::Lightstep::Tracer]
+        # @param [String] command
+        # @return [Boolean]
         #
-        def tracer
-          @tracer ||= ::Bigcommerce::Lightstep::Tracer.instance
+        def excluded?(command)
+          @excluded_commands.include?(command.to_s)
+        end
+
+        ##
+        # @return [Boolean]
+        #
+        def active_span?
+          tracer.respond_to?(:active_span) && tracer.active_span
         end
       end
     end

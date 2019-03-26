@@ -58,6 +58,7 @@ module Bigcommerce
               def call_pipeline(pipeline)
                 return call_pipeline_original(pipeline) unless bc_lightstep_tracer
 
+                commands = pipeline.try(:commands) || []
                 bc_lightstep_tracer.trace(
                   key: 'redis.pipelined',
                   statement: commands.empty? ? '' : commands.map { |arr| arr.join(' ') }.join(', '),

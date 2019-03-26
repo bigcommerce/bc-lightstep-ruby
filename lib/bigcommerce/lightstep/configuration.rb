@@ -38,6 +38,8 @@ module Bigcommerce
         max_buffered_spans: 1_000,
         max_log_records: 1_000,
         max_reporting_interval_seconds: 3.0,
+        redis_excluded_commands: %w(ping),
+        redis_allow_root_spans: false,
         enabled: true
       }.freeze
 
