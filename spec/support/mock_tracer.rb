@@ -13,11 +13,34 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
+
 module Bigcommerce
   module Lightstep
-    module SpecHelpers
-      def mock_tracer
-        @mock_tracer ||= Bigcommerce::Lightstep::MockTracer.new
+    class MockTracer
+      def start_span(_key, _options = {})
+        yield span
+      end
+
+      def span
+        @span ||= Bigcommerce::Lightstep::MockSpan.new
+      end
+
+      def clear_active_span!
+        true
+      end
+
+      def reporter_initialized?
+        true
+      end
+    end
+
+    class MockSpan
+      def set_tag(_key, _value)
+        true
+      end
+
+      def finish
+        true
       end
     end
   end

@@ -2,7 +2,7 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
-
+- Add Redis instrumentation support
 
 h3. 1.2.2
 

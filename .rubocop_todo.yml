@@ -8,6 +8,9 @@
 Metrics/AbcSize:
   Max: 147
 
+Metrics/BlockLength:
+  Max: 80
+
 Metrics/BlockNesting:
   Max: 4
 
@@ -26,7 +29,6 @@ Metrics/PerceivedComplexity:
 Metrics/LineLength:
   Enabled: false
 
-# Offense count: 63
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 88
