@@ -41,7 +41,7 @@ module Bigcommerce
               alias_method :call_original, :call
               alias_method :call_pipeline_original, :call_pipeline
 
-              def call(command)
+              def call(command, &block)
                 return call_original(command) unless bc_lightstep_tracer
 
                 bc_lightstep_tracer.trace(
@@ -51,7 +51,7 @@ module Bigcommerce
                   host: host,
                   port: port
                 ) do
-                  call_original(command)
+                  call_original(command, &block)
                 end
               end
 
