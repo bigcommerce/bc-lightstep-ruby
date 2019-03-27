@@ -36,5 +36,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
 
   spec.add_runtime_dependency 'lightstep', '~> 0.13.0'
-  spec.add_runtime_dependency 'faraday', '~> 0.8'
+  spec.add_runtime_dependency 'faraday', ['>= 0.8', '<= 0.15.4']
 end
