@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.3.3
+
 - Updates gemspec to allow for newer Faraday versions
 
 h3. 1.3.2
