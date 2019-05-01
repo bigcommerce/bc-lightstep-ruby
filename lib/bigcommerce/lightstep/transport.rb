@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -25,12 +27,12 @@ module Bigcommerce
     class Transport < ::LightStep::Transport::Base
       class InvalidAccessTokenError < StandardError; end
 
-      ENCRYPTION_TLS = 'tls'.freeze
-      ENCRYPTION_NONE = 'none'.freeze
-      HEADER_ACCESS_TOKEN = 'LightStep-Access-Token'.freeze
-      LIGHTSTEP_HOST = 'collector.lightstep.com'.freeze
+      ENCRYPTION_TLS = 'tls'
+      ENCRYPTION_NONE = 'none'
+      HEADER_ACCESS_TOKEN = 'LightStep-Access-Token'
+      LIGHTSTEP_HOST = 'collector.lightstep.com'
       LIGHTSTEP_PORT = 443
-      REPORTS_API_ENDPOINT = '/api/v0/reports'.freeze
+      REPORTS_API_ENDPOINT = '/api/v0/reports'
 
       # Initialize the transport
       # @param host [String] host of the domain to the endpoind to push data

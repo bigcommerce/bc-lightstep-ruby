@@ -1,8 +1,5 @@
-inherit_from:
-  - .rubocop_todo.yml
-
 AllCops:
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.4
   Exclude:
     - spec/**/*
     - .bundle/**/*
@@ -17,4 +14,17 @@ Lint/AmbiguousOperator:
   Enabled: false
 
 Metrics/ParameterLists:
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/BlockLength:
+  Exclude:
+    - lib/bigcommerce/lightstep/redis/wrapper.rb
+
+Metrics/LineLength:
   Enabled: false
+
+Metrics/MethodLength:
+  Max: 40
