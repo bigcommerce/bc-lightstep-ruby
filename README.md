@@ -1,6 +1,6 @@
 # bc-lightstep-ruby - LightStep distributed tracing
 
-[![Build Status](https://travis-ci.com/bigcommerce/bc-lightstep-ruby.svg?token=D3Cc4LCF9BgpUx4dpPpv&branch=master)](https://travis-ci.com/bigcommerce/bc-lightstep-ruby) [![Gem Version](https://badge.fury.io/rb/bc-lightstep-ruby.svg)](https://badge.fury.io/rb/bc-lightstep-ruby) [![Inline docs](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby.svg?branch=master)](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby)
+[![CircleCI](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/master.svg?style=svg)](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/master) [![Gem Version](https://badge.fury.io/rb/bc-lightstep-ruby.svg)](https://badge.fury.io/rb/bc-lightstep-ruby) [![Inline docs](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby.svg?branch=master)](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby)
 
 Adds [LightStep](https://lightstep.com) tracing support for Ruby. This is an extension of the 
 [LightStep ruby gem](https://github.com/lightstep/lightstep-tracer-ruby) and adds extra functionality and resiliency.
