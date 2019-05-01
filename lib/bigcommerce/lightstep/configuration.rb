@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -38,7 +40,7 @@ module Bigcommerce
         max_buffered_spans: 1_000,
         max_log_records: 1_000,
         max_reporting_interval_seconds: 3.0,
-        redis_excluded_commands: %w(ping),
+        redis_excluded_commands: %w[ping],
         redis_allow_root_spans: false,
         enabled: true
       }.freeze
@@ -103,7 +105,7 @@ module Bigcommerce
 
         self.verbosity = ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i
         self.logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
-        self.enabled = ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i > 0
+        self.enabled = ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i.positive?
       end
 
       ##

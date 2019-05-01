@@ -2,6 +2,9 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Add `frozen_string_literal: true` to all files
+- Deprecate ruby 2.2 support
+
 h3. 1.3.3
 
 - Updates gemspec to allow for newer Faraday versions

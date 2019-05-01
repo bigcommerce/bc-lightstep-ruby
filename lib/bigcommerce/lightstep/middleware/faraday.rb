@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -23,9 +25,9 @@ module Bigcommerce
         HTTP_STATUS_INTERNAL_ERROR = 500
         HTTP_STATUS_SERVICE_UNAVAIL = 503
 
-        OT_TAG_TRACE_ID = 'ot-tracer-traceid'.freeze
-        OT_TAG_SPAN_ID = 'ot-tracer-spanid'.freeze
-        OT_TAG_SAMPLED = 'ot-tracer-sampled'.freeze
+        OT_TAG_TRACE_ID = 'ot-tracer-traceid'
+        OT_TAG_SPAN_ID = 'ot-tracer-spanid'
+        OT_TAG_SAMPLED = 'ot-tracer-sampled'
 
         def initialize(app, service_name = nil)
           @app = app

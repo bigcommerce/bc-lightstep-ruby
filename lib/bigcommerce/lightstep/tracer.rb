@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -39,7 +41,7 @@ module Bigcommerce
         if enabled?
           # enable the tracer (for fork support)
           tracer.enable
-        elsif tracer && tracer.enabled?
+        elsif tracer&.enabled?
           # We are not enabled and the tracer is currently on
           # https://github.com/lightstep/lightstep-tracer-ruby/blob/master/lib/lightstep/tracer.rb#L129-L130
           # we have to set this through instance_variable_set because of a bug in the core lightstep gem which
@@ -62,6 +64,7 @@ module Bigcommerce
         self.active_span = span
 
         # run the process
+        result = nil
         begin
           result = yield span
         rescue StandardError

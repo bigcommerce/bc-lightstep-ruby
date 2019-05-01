@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bigcommerce
   module Lightstep
     ##
@@ -29,7 +31,7 @@ module Bigcommerce
           span.set_tag('http.host', request.host)
           begin
             resp = yield
-          rescue StandardError => _
+          rescue StandardError => _e
             span.set_tag('error', true)
             span.set_tag('http.status_code', Bigcommerce::Lightstep.http1_error_code)
             tracer.clear_active_span!
