@@ -27,6 +27,7 @@ module Bigcommerce
         controller_trace_prefix: 'controllers.',
         access_token: '',
         host: 'lightstep-collector.linkerd',
+        interceptors: nil,
         port: 4140,
         ssl_verify_peer: true,
         open_timeout: 20,
@@ -106,6 +107,7 @@ module Bigcommerce
         self.verbosity = ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i
         self.logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
         self.enabled = ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i.positive?
+        self.interceptors = ::Bigcommerce::Lightstep::Interceptors::Registry.new
       end
 
       ##
