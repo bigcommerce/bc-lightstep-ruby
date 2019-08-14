@@ -15,17 +15,22 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source 'https://rubygems.org'
+module Bigcommerce
+  module Lightstep
+    module Interceptors
+      ##
+      # Hydrates span tags with specified ENV vars
+      #
+      class Base
+        def initialize(*); end
 
-gem 'null-logger',             '~> 0.1', require: 'null_logger'
-gem 'redis',                   '~> 4'
-
-group :development do
-  gem 'bundler-audit',         '~> 0.6'
-  gem 'rspec',                 '~> 3.8'
-  gem 'rspec_junit_formatter', '~> 0.4.1'
-  gem 'rubocop',               '~> 0.74'
-  gem 'simplecov',             '~> 0.16', require: false
+        ##
+        # @param [::LightStep::Span] span
+        #
+        def call(*)
+          raise NotImplementedError, 'Please implement .call on your subclassed interceptor'
+        end
+      end
+    end
+  end
 end
-
-gemspec

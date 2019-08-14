@@ -23,7 +23,9 @@ module Bigcommerce
     class Tracer
       private
 
-      def initialize; end
+      def initialize
+        @interceptors = Bigcommerce::Lightstep.interceptors || Bigcommerce::Lightstep::Interceptors::Registry.new
+      end
 
       public
 
@@ -66,7 +68,9 @@ module Bigcommerce
         # run the process
         result = nil
         begin
-          result = yield span
+          @interceptors.intercept(span) do |inner_span|
+            result = yield inner_span
+          end
         rescue StandardError
           span.set_tag('error', true)
           raise

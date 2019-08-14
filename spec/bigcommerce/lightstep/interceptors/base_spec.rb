@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
+# Copyright (c) 2019-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -15,17 +15,17 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-source 'https://rubygems.org'
+require 'spec_helper'
 
-gem 'null-logger',             '~> 0.1', require: 'null_logger'
-gem 'redis',                   '~> 4'
+describe Bigcommerce::Lightstep::Interceptors::Base do
+  let(:interceptor) { described_class.new }
+  let(:span) { double(:span, set_tag: true) }
 
-group :development do
-  gem 'bundler-audit',         '~> 0.6'
-  gem 'rspec',                 '~> 3.8'
-  gem 'rspec_junit_formatter', '~> 0.4.1'
-  gem 'rubocop',               '~> 0.74'
-  gem 'simplecov',             '~> 0.16', require: false
+  describe '.call' do
+    subject { interceptor.call(span: span) { true } }
+
+    it 'should raise a NotImplementedError' do
+      expect { subject }.to raise_error(NotImplementedError)
+    end
+  end
 end
-
-gemspec
