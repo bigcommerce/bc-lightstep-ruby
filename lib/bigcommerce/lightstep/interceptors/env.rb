@@ -31,6 +31,10 @@ module Bigcommerce
           'provider.datacenter': 'NOMAD_DC'
         }.freeze
 
+        PRESET_HOSTNAME = {
+          'hostname': 'HOSTNAME',
+        }.freeze
+
         ##
         # @param [Hash] keys A hash of span->env key mappings
         # @param [ENV] env The ENV class to get variables from
@@ -63,6 +67,8 @@ module Bigcommerce
         def augment_keys_with_presets!
           @presets.each do |preset|
             case preset
+            when :hostname
+              @keys.merge!(PRESET_HOSTNAME)
             when :nomad
               @keys.merge!(PRESET_NOMAD)
             end
