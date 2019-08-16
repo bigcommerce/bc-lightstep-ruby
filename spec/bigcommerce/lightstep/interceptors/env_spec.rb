@@ -55,6 +55,21 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
         end
       end
 
+      context 'with the hostname preset' do
+        let(:presets) { [:hostname] }
+        let(:keys) { {} }
+        let(:env) do
+          {
+              'HOSTNAME' => 'asdf1234',
+          }
+        end
+
+        it 'should set the appropriate nomad tags' do
+          expect(span).to receive(:set_tag).with('hostname', 'asdf1234').once.ordered
+          subject
+        end
+      end
+
       context 'with the nomad preset' do
         let(:presets) { [:nomad] }
         let(:keys) { {} }

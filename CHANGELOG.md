@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Add `hostname` preset for env var injection into spans
+
 h3. 1.5.0
 
 - Add interceptors that allow for global injection of tags into spans
