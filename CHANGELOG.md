@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.5.2
+
 - Add rspec helper for testing custom lightstep spans
 
 h3. 1.5.1
