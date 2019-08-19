@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Add rspec helper for testing custom lightstep spans
+
 h3. 1.5.1
 
 - Add `hostname` preset for env var injection into spans
