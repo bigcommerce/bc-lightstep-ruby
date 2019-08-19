@@ -86,6 +86,22 @@ re-enable this by setting the `redis_allow_root_spans` configuration option to `
 It also excludes `ping` commands, and you can provide a custom list by setting the `redis_excluded_commands` 
 configuration option to an array of commands to exclude.
 
+## RSpec
+
+This library comes with a built-in matcher for testing span blocks. In your rspec config:
+
+```ruby
+require 'bigcommerce/lightstep/rspec'
+```
+
+Then, in a test:
+
+```ruby
+it 'should create a lightstep span' do
+  expect { my_code_here }.to create_a_lightstep_span(name: 'my-span-name', tags: { tag_one: 'value-here' })
+end
+```
+
 ## License
 
 Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved 
