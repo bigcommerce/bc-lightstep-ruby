@@ -102,6 +102,44 @@ it 'should create a lightstep span' do
 end
 ```
 
+## Global Interceptors
+
+This library has global interceptor support that will allow access to each span as it is built. This allows you to
+dynamically inject tags or alter spans as they are collected. You can configure interceptors via an initializer:
+
+```ruby
+Bigcommerce::Lightstep.configure do |c|
+  c.interceptors.use(MyInterceptor, an_option: 123)
+  # or, alternatively:
+  c.interceptors.use(MyInterceptor.new(an_option: 123)) 
+end
+```
+
+It's important to note that this is a CPU-intensive operation as interceptors will be run for every `start_span` tag,
+so don't build interceptors that require lots of processing power or that would impact latencies.
+
+### ENV Interceptor
+
+Provided out of the box is an interceptor to automatically inject ENV vars into span tags. You can configure like so:
+
+```ruby
+
+Bigcommerce::Lightstep.configure do |c|
+  c.interceptors.use(::Bigcommerce::Lightstep::Interceptors::Env.new(
+    keys: {
+      version: 'VERSION'
+    },
+    presets: [:nomad, :hostname]
+  ))
+end
+```
+
+The `keys` argument allows you to pass a `span tag => ENV key` mapping that will assign those ENV vars to spans. The
+`presets` argument comes with a bunch of preset mappings you can use rather than manually mapping them yourself.
+
+Note that this interceptor _must_ be instantiated in configuration, rather than passing the class and options,
+as it needs to pre-materialize the ENV values to reduce CPU usage. 
+
 ## License
 
 Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved 

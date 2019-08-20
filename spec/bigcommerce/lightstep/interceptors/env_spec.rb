@@ -31,7 +31,7 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
     }
   end
   let(:presets) { [] }
-  let(:interceptor) { described_class.new(keys: keys, env: env, presets: presets)}
+  let(:interceptor) { described_class.new(keys: keys, env: env, presets: presets) }
   let(:span) { double(:span, set_tag: true) }
 
   describe '.call' do
@@ -43,6 +43,14 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
           expect(span).to receive(:set_tag).with('git.sha', '770ecc256e414c81344caa78eaa0c9272a375c71').once.ordered
           expect(span).to receive(:set_tag).with('provider.datacenter', 'us-central1-a').once.ordered
           subject
+        end
+
+        it 'should only collect the tags once even with multiple calls' do
+          expect(env).to receive(:fetch).with('GIT_SHA', nil).once.ordered
+          expect(env).to receive(:fetch).with('DATACENTER', nil).once.ordered
+          interceptor.call(span: span) { true }
+          interceptor.call(span: span) { true }
+          interceptor.call(span: span) { true }
         end
       end
 

@@ -45,21 +45,38 @@ module Bigcommerce
           @presets = presets || []
           @env = env || ENV
           augment_keys_with_presets!
+          collect_values!
         end
 
         ##
         # @param [::LightStep::Span] span
         #
         def call(span:)
-          @keys.each do |span_key, env_key|
-            value = @env.fetch(env_key.to_s, nil)
-            span.set_tag(span_key.to_s.downcase.tr('-', '_').strip, value.nil? ? '' : value)
+          value_mutex do
+            @values.each do |span_key, value|
+              span.set_tag(span_key, value)
+            end
           end
 
           yield span
         end
 
         private
+
+        ##
+        # Pre-collect values at start
+        #
+        def collect_values!
+          value_mutex do
+            @values = {}
+            @keys.each do |span_key, env_key|
+              value = @env.fetch(env_key.to_s, nil)
+              value = value.nil? ? '' : value
+              @values[span_key.to_s.downcase.tr('-', '_').strip] = value
+            end
+            @values
+          end
+        end
 
         ##
         # Augment keys based on presets
@@ -73,6 +90,17 @@ module Bigcommerce
               @keys.merge!(PRESET_NOMAD)
             end
           end
+        end
+
+        ##
+        # Handle access to values in a thread-safe manner
+        #
+        def value_mutex(&block)
+          @value_mutex ||= begin
+            require 'monitor'
+            Monitor.new
+          end
+          @value_mutex.synchronize(&block)
         end
       end
     end
