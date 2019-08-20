@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.6.0
+
 - Allow for instantiation of interceptors at initialization time
 - Pre-build tag values for ENV interceptor at initialization to reduce CPU usage per-span
 
