@@ -2,6 +2,9 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Allow for instantiation of interceptors at initialization time
+- Pre-build tag values for ENV interceptor at initialization to reduce CPU usage per-span
+
 h3. 1.5.2
 
 - Add rspec helper for testing custom lightstep spans

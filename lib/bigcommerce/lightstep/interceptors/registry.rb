@@ -29,8 +29,8 @@ module Bigcommerce
         ##
         # Add to the thread-safe registry
         #
-        # @param [Class] klass The class to add
-        # @param [Hash] options A hash of options to pass into the class during initialization
+        # @param [Class|Object] klass The class to add or object to register.
+        # @param [Hash] options (Optional) A hash of options to pass into the class during initialization
         #
         def use(klass, options = {})
           registry_mutex do
@@ -85,7 +85,9 @@ module Bigcommerce
         #
         def list
           registry_mutex do
-            @registry.map { |h| h[:klass] }
+            @registry.map do |h|
+              h[:klass].instance_of?(Class) ? h[:klass] : h[:klass].class
+            end
           end
         end
 
@@ -95,13 +97,11 @@ module Bigcommerce
         # @return [Array<Object>]
         #
         def all
-          is = []
           registry_mutex do
-            @registry.each do |o|
-              is << o[:klass].new(o[:options])
+            @registry.map do |o|
+              o[:klass].is_a?(Class) ? o[:klass].new(o[:options]) : o[:klass]
             end
           end
-          is
         end
 
         private
