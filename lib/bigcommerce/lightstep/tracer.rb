@@ -24,7 +24,7 @@ module Bigcommerce
       private
 
       def initialize
-        @interceptors = Bigcommerce::Lightstep.interceptors || Bigcommerce::Lightstep::Interceptors::Registry.new
+        @context = ::Bigcommerce::Lightstep::Interceptors::Context.new
       end
 
       public
@@ -68,7 +68,7 @@ module Bigcommerce
         # run the process
         result = nil
         begin
-          @interceptors.intercept(span) do |inner_span|
+          @context.intercept(span) do |inner_span|
             result = yield inner_span
           end
         rescue StandardError

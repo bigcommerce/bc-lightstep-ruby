@@ -42,24 +42,6 @@ module Bigcommerce
         end
 
         ##
-        # Intercept a trace with all interceptors
-        #
-        def intercept(span)
-          interceptors = all
-          interceptor = interceptors.pop
-
-          return yield unless interceptor
-
-          interceptor.call(span: span) do |yielded_span|
-            if interceptors.any?
-              intercept(yielded_span) { yield yielded_span }
-            else
-              yield yielded_span
-            end
-          end
-        end
-
-        ##
         # Clear the registry
         #
         def clear

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (c) 2019-present, BigCommerce Pty. Ltd. All rights reserved
+# Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -15,31 +15,43 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
+module Bigcommerce
+  module Lightstep
+    module Interceptors
+      ##
+      # Runs interceptors in a given context
+      #
+      class Context
+        ##
+        # Initialize the interception context
+        #
+        # @param [Array<Bigcommerce::Lightstep::Interceptors::Base>] interceptors
+        #
+        def initialize(interceptors: nil)
+          @interceptors = interceptors || Bigcommerce::Lightstep.interceptors.all
+        end
 
-class TestInterceptor < ::Bigcommerce::Lightstep::Interceptors::Base
-  def call(span:)
-    Math.sqrt(span.hash.abs).to_i
-    yield span
-  end
-end
+        ##
+        # Intercept a trace with all interceptors
+        #
+        # @param [::LightStep::Span] span
+        #
+        def intercept(span)
+          return yield span if @interceptors.none?
 
-class TestInterceptor2 < ::Bigcommerce::Lightstep::Interceptors::Base
-  def call(span:)
-    Math.sqrt(span.hash.abs).to_i + 2
-    yield span
-  end
-end
+          interceptor = @interceptors.pop
 
-class TestInterceptor3 < ::Bigcommerce::Lightstep::Interceptors::Base
-  def call(span:)
-    Math.sqrt(span.hash.abs).to_i + 3
-    yield
-  end
-end
+          return yield span unless interceptor
 
-class TestInterceptor4 < ::Bigcommerce::Lightstep::Interceptors::Base
-  def call(span:)
-    Math.sqrt(span.hash.abs).to_i + 4
-    yield span
+          interceptor.call(span: span) do |yielded_span|
+            if @interceptors.any?
+              intercept(yielded_span) { yield yielded_span }
+            else
+              yield yielded_span
+            end
+          end
+        end
+      end
+    end
   end
 end
