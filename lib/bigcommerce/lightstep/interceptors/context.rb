@@ -26,9 +26,11 @@ module Bigcommerce
         # Initialize the interception context
         #
         # @param [Array<Bigcommerce::Lightstep::Interceptors::Base>] interceptors
+        # @param [::Logger] logger
         #
-        def initialize(interceptors: nil)
-          @interceptors = interceptors || Bigcommerce::Lightstep.interceptors.all
+        def initialize(interceptors: nil, logger: nil)
+          @interceptors = interceptors || ::Bigcommerce::Lightstep.interceptors.all
+          @logger = logger || ::Bigcommerce::Lightstep.logger
         end
 
         ##
@@ -42,6 +44,8 @@ module Bigcommerce
           interceptor = @interceptors.pop
 
           return yield span unless interceptor
+
+          @logger.debug "[bigcommerce-lightstep] Intercepting request with interceptor: #{interceptor.class}"
 
           interceptor.call(span: span) do |yielded_span|
             if @interceptors.any?

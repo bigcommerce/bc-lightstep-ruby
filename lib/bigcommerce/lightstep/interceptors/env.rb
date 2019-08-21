@@ -52,6 +52,8 @@ module Bigcommerce
         # @param [::LightStep::Span] span
         #
         def call(span:)
+          return yield span unless root_span?(span)
+
           value_mutex do
             @values.each do |span_key, value|
               span.set_tag(span_key, value)
@@ -62,6 +64,10 @@ module Bigcommerce
         end
 
         private
+
+        def root_span?(span)
+          span.instance_variable_get(:@root_span) == true
+        end
 
         ##
         # Pre-collect values at start
