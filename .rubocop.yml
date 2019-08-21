@@ -28,3 +28,9 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
   Max: 40
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/CyclomaticComplexity:
+  Max: 10
