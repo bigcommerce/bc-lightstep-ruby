@@ -33,6 +33,11 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
   let(:presets) { [] }
   let(:interceptor) { described_class.new(keys: keys, env: env, presets: presets) }
   let(:span) { double(:span, set_tag: true) }
+  let(:root_span) { true }
+
+  before do
+    span.instance_variable_set(:@root_span, root_span)
+  end
 
   describe '.call' do
     subject { interceptor.call(span: span) { true } }
@@ -99,6 +104,15 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
           expect(span).to receive(:set_tag).with('nomad.task_name', 'foo-bar').ordered
           expect(span).to receive(:set_tag).with('provider.region', 'us').ordered
           expect(span).to receive(:set_tag).with('provider.datacenter', 'us-central1-a').ordered
+          subject
+        end
+      end
+
+      context 'when it is not the root span' do
+        let(:root_span) { false }
+
+        it 'should not set any tags' do
+          expect(span).to_not receive(:set_tag)
           subject
         end
       end

@@ -19,20 +19,21 @@ require 'spec_helper'
 
 describe Bigcommerce::Lightstep::Interceptors::Registry do
   let(:registry) { described_class.new }
-  let(:interceptor_class) { TestInterceptor }
-  let(:interceptor_class2) { TestInterceptor2 }
-  let(:interceptor_class3) { TestInterceptor3 }
-  let(:interceptor_class4) { TestInterceptor4 }
-  let(:interceptor_options) { { one: 'two' } }
+  let(:interceptor1) { TestInterceptor.new(int: 1) }
+  let(:interceptor2) { TestInterceptor2.new(int: 2) }
+  let(:interceptor3) { TestInterceptor3.new(int: 3) }
+  let(:interceptor4) { TestInterceptor4.new(int: 4) }
+  let(:span) { double(:span, set_tag: true) }
 
   describe '.use' do
-    subject { registry.use(interceptor_class, interceptor_options) }
+    subject { registry.use(interceptor1, foo: 'bar') }
+
     it 'should add the interceptor to the registry' do
       expect { subject }.to_not raise_error
       expect(registry.count).to eq 1
       expect(registry.instance_variable_get('@registry').first).to eq(
-        klass: interceptor_class,
-        options: interceptor_options
+        klass: interceptor1,
+        options: { foo: 'bar' }
       )
     end
   end
@@ -41,8 +42,8 @@ describe Bigcommerce::Lightstep::Interceptors::Registry do
     subject { registry.clear }
 
     before do
-      registry.use(interceptor_class)
-      registry.use(interceptor_class2)
+      registry.use(interceptor1)
+      registry.use(interceptor2)
     end
 
     it 'should clear the registry of interceptors' do
@@ -62,7 +63,7 @@ describe Bigcommerce::Lightstep::Interceptors::Registry do
 
     context 'with one interceptor' do
       before do
-        registry.use(interceptor_class)
+        registry.use(interceptor1)
       end
 
       it 'should return 1' do
@@ -72,9 +73,9 @@ describe Bigcommerce::Lightstep::Interceptors::Registry do
 
     context 'with multiple interceptors' do
       before do
-        registry.use(interceptor_class)
-        registry.use(interceptor_class2)
-        registry.use(interceptor_class3)
+        registry.use(interceptor1)
+        registry.use(interceptor2)
+        registry.use(interceptor3)
       end
 
       it 'should return the number' do
@@ -86,20 +87,21 @@ describe Bigcommerce::Lightstep::Interceptors::Registry do
   describe '.all' do
     let(:request) { build :controller_request }
     let(:errors) { build :error }
+
     subject { registry.all }
 
     before do
-      registry.use(interceptor_class)
-      registry.use(interceptor_class3)
-      registry.use(interceptor_class2)
+      registry.use(interceptor1)
+      registry.use(interceptor2)
+      registry.use(interceptor3)
     end
 
     it 'should return all the interceptors prepared by the request and maintain insertion order' do
       prepped = subject
       expect(prepped.count).to eq 3
-      expect(prepped[0]).to be_a(interceptor_class)
-      expect(prepped[1]).to be_a(interceptor_class3)
-      expect(prepped[2]).to be_a(interceptor_class2)
+      expect(prepped[0]).to eq interceptor1
+      expect(prepped[1]).to eq interceptor2
+      expect(prepped[2]).to eq interceptor3
     end
   end
 end

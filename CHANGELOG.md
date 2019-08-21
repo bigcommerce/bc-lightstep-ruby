@@ -2,6 +2,11 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Add interception context for thread-safe interception per trace
+- Fix issue when there are no interceptors configured
+- Fix issue where there is more than one interceptor configured
+- Only pass env tags if root span for service
+
 h3. 1.6.0
 
 - Allow for instantiation of interceptors at initialization time

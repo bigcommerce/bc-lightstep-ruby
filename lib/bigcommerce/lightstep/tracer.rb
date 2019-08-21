@@ -21,14 +21,6 @@ module Bigcommerce
     # Global tracer
     #
     class Tracer
-      private
-
-      def initialize
-        @interceptors = Bigcommerce::Lightstep.interceptors || Bigcommerce::Lightstep::Interceptors::Registry.new
-      end
-
-      public
-
       include Singleton
 
       ##
@@ -62,13 +54,15 @@ module Bigcommerce
         # create new span
         span = ::LightStep.start_span(name, child_of: current_parent, start_time: start_time, tags: tags)
 
+        mark_root_span(span) if active_span.nil?
+
         # set it as the active span
         self.active_span = span
 
         # run the process
         result = nil
         begin
-          @interceptors.intercept(span) do |inner_span|
+          build_context.intercept(span) do |inner_span|
             result = yield inner_span
           end
         rescue StandardError
@@ -119,6 +113,13 @@ module Bigcommerce
       private
 
       ##
+      # @return [::Bigcommerce::Lightstep::Interceptors::Context]
+      #
+      def build_context
+        ::Bigcommerce::Lightstep::Interceptors::Context.new
+      end
+
+      ##
       # Determine the active parent
       #
       # @param [Hash|::LightStep::SpanContext] context
@@ -145,6 +146,14 @@ module Bigcommerce
       #
       def tracer
         LightStep.instance
+      end
+
+      ##
+      # Because LightStep doesn't allow changing the span return class, or adding any arbitrary attributes, we need
+      # to do this here to mark what is the "root" span in a service.
+      #
+      def mark_root_span(span)
+        span.instance_variable_set(:@root_span, true)
       end
     end
   end

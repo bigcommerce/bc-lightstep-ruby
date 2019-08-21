@@ -18,28 +18,28 @@
 
 class TestInterceptor < ::Bigcommerce::Lightstep::Interceptors::Base
   def call(span:)
-    Math.sqrt(span.hash * -1)
-    yield
+    Math.sqrt(span.hash.abs).to_i
+    yield span
   end
 end
 
 class TestInterceptor2 < ::Bigcommerce::Lightstep::Interceptors::Base
   def call(span:)
-    Math.sqrt(span.hash * -1) + 2
-    yield
+    Math.sqrt(span.hash.abs).to_i + 2
+    yield span
   end
 end
 
 class TestInterceptor3 < ::Bigcommerce::Lightstep::Interceptors::Base
   def call(span:)
-    Math.sqrt(span.hash * -1)+ 3
+    Math.sqrt(span.hash.abs).to_i + 3
     yield
   end
 end
 
 class TestInterceptor4 < ::Bigcommerce::Lightstep::Interceptors::Base
   def call(span:)
-    Math.sqrt(span.hash * -1) + 4
-    yield
+    Math.sqrt(span.hash.abs).to_i + 4
+    yield span
   end
 end

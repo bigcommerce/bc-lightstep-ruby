@@ -33,4 +33,10 @@ RSpec.configure do |config|
   config.color = true
 
   config.include Bigcommerce::Lightstep::SpecHelpers
+
+  config.before do
+    Bigcommerce::Lightstep.configure do |c|
+      c.logger = ::NullLogger.new
+    end
+  end
 end
