@@ -42,6 +42,7 @@ module Bigcommerce
             span.set_tag('http.url', uri.to_s.split('?').first)
             span.set_tag('http.method', request_env[:method].to_s.downcase)
             span.set_tag('http.external-service', true)
+            span.set_tag('span.kind', 'client')
 
             inject_ot_tags!(request_env, span)
 

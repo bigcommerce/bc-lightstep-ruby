@@ -29,6 +29,7 @@ module Bigcommerce
           span.set_tag('http.method', request.method)
           span.set_tag('http.content_type', request.format)
           span.set_tag('http.host', request.host)
+          span.set_tag('span.kind', 'server')
           begin
             resp = yield
           rescue StandardError => _e

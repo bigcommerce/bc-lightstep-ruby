@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Add span.kind tags to boundary spans
+
 h3. 1.6.1
 
 - Add interception context for thread-safe interception per trace
