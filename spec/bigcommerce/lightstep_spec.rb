@@ -36,7 +36,8 @@ describe Bigcommerce::Lightstep do
     it 'should properly configure lightstep' do
       expect(::LightStep).to receive(:configure).with(
         component_name: component_name,
-        transport: transport
+        transport: transport,
+        tags: {}
       ).and_call_original
 
       expect(LightStep.instance).to receive(:max_span_records=).with(max_buffered_spans)
