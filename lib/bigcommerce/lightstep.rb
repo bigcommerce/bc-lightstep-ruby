@@ -43,9 +43,12 @@ module Bigcommerce
       component_name ||= ::Bigcommerce::Lightstep.component_name
       transport_factory ||= ::Bigcommerce::Lightstep::TransportFactory.new
       ::LightStep.logger = logger
+      tags = {}
+      tags['service.version'] = ::Bigcommerce::Lightstep.release unless ::Bigcommerce::Lightstep.release.empty?
       ::LightStep.configure(
         component_name: component_name,
-        transport: transport_factory.build
+        transport: transport_factory.build,
+        tags: tags
       )
       ::LightStep.instance.max_span_records = ::Bigcommerce::Lightstep.max_buffered_spans
       ::LightStep.instance.max_log_records = ::Bigcommerce::Lightstep.max_log_records

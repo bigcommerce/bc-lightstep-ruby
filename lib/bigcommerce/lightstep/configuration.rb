@@ -113,12 +113,33 @@ module Bigcommerce
       ##
       # Automatically determine environment
       #
+      # @return [String]
+      #
       def environment
         if defined?(Rails)
           Rails.env
         else
-          ENV['RACK_ENV'] || ENV['RAILS_ENV'] || 'development'
+          env['RACK_ENV'] || env['RAILS_ENV'] || 'development'
         end
+      end
+
+      ##
+      # @return [String]
+      #
+      def release
+        unless @release
+          app_name = env.fetch('LIGHTSTEP_APP_NAME', env.fetch('NOMAD_JOB_NAME', '')).to_s
+          sha = env.fetch('LIGHTSTEP_RELEASE_SHA', env.fetch('NOMAD_META_RELEASE_SHA', '')).to_s
+          default_release = app_name.empty? && sha.empty? ? '' : "#{app_name}@#{sha}"
+          @release = env.fetch('LIGHTSTEP_RELEASE', default_release).to_s
+        end
+        @release
+      end
+
+      private
+
+      def env
+        ENV
       end
     end
   end

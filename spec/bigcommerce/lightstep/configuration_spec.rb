@@ -20,6 +20,11 @@ class TestConfiguration
 end
 describe Bigcommerce::Lightstep::Configuration do
   let(:obj) { TestConfiguration.new }
+  let(:env) { {} }
+
+  before do
+    allow(obj).to receive(:env).and_return(env)
+  end
 
   describe '.reset' do
     subject { obj.port }
@@ -34,25 +39,75 @@ describe Bigcommerce::Lightstep::Configuration do
   end
 
   describe '.environment' do
-    subject { obj.send(:environment) }
+    subject { obj.environment }
 
     context 'ENV RAILS_ENV' do
-      before do
-        allow(ENV).to receive(:[]).with('RACK_ENV').and_return nil
-        allow(ENV).to receive(:[]).with('RAILS_ENV').and_return 'production'
+      let(:env) do
+        {
+          'RAILS_ENV' => 'production'
+        }
       end
+
       it 'should return the proper environment' do
         expect(subject).to eq 'production'
       end
     end
 
     context 'ENV RACK_ENV' do
-      before do
-        allow(ENV).to receive(:[]).with('RACK_ENV').and_return 'production'
-        allow(ENV).to receive(:[]).with('RAILS_ENV').and_return nil
+      let(:env) do
+        {
+          'RACK_ENV' => 'production'
+        }
       end
+
       it 'should return the proper environment' do
         expect(subject).to eq 'production'
+      end
+    end
+  end
+
+  describe '.release' do
+    let(:app_name) { 'users' }
+    let(:sha) { 'asdf' }
+    let(:release) { "#{app_name}@#{sha}" }
+
+    subject { obj.release }
+
+    context 'when the LIGHTSTEP_RELEASE env var is set' do
+      let(:env) do
+        {
+          'LIGHTSTEP_RELEASE' => "#{app_name}@#{sha}"
+        }
+      end
+
+      it 'should return the proper release name' do
+        expect(subject).to eq release
+      end
+    end
+
+    context 'when the LIGHTSTEP_RELEASE_SHA and LIGHTSTEP_APP_NAME vars are set' do
+      let(:env) do
+        {
+          'LIGHTSTEP_RELEASE_SHA' => sha,
+          'LIGHTSTEP_APP_NAME' => app_name
+        }
+      end
+
+      it 'should return the proper release name' do
+        expect(subject).to eq release
+      end
+    end
+
+    context 'when the NOMAD_JOB_NAME and NOMAD_META_RELEASE_SHA vars are set' do
+      let(:env) do
+        {
+          'NOMAD_META_RELEASE_SHA' => sha,
+          'NOMAD_JOB_NAME' => app_name
+        }
+      end
+
+      it 'should return the proper release name' do
+        expect(subject).to eq release
       end
     end
   end
