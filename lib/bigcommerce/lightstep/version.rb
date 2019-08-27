@@ -17,6 +17,6 @@
 #
 module Bigcommerce
   module Lightstep
-    VERSION = '1.6.3'
+    VERSION = '1.6.4.pre'
   end
 end
