@@ -2,6 +2,10 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+h3. 1.6.3
+
+- Add service.version to tags
+
 h3. 1.6.2
 
 - Add span.kind tags to boundary spans
