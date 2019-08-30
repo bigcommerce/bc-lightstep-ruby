@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Add `nomad.node.id` and `nomad.node.name` span tags via ENV mappings
+
 h3. 1.6.3
 
 - Add service.version to tags

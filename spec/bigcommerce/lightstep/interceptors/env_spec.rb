@@ -91,6 +91,8 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
               'NOMAD_CPU_LIMIT' => '128',
               'NOMAD_MEMORY_LIMIT' => '512',
               'NOMAD_META_SHA' => '770ecc256e414c81344caa78eaa0c9272a375c71',
+              'NOMAD_NODE_ID' => 'asdf1234',
+              'NOMAD_NODE_NAME' => 'nomad-client-abc789',
               'NOMAD_TASK_NAME' => 'foo-bar',
               'NOMAD_REGION' => 'us',
               'NOMAD_DC' => 'us-central1-a'
@@ -101,6 +103,8 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
           expect(span).to receive(:set_tag).with('container.cpu', '128').once.ordered
           expect(span).to receive(:set_tag).with('container.mem', '512').ordered
           expect(span).to receive(:set_tag).with('git.sha', '770ecc256e414c81344caa78eaa0c9272a375c71').ordered
+          expect(span).to receive(:set_tag).with('nomad.node.id', 'asdf1234').ordered
+          expect(span).to receive(:set_tag).with('nomad.node.name', 'nomad-client-abc789').ordered
           expect(span).to receive(:set_tag).with('nomad.task_name', 'foo-bar').ordered
           expect(span).to receive(:set_tag).with('provider.region', 'us').ordered
           expect(span).to receive(:set_tag).with('provider.datacenter', 'us-central1-a').ordered
