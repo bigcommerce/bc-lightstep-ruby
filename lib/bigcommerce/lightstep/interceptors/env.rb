@@ -26,6 +26,8 @@ module Bigcommerce
           'container.cpu': 'NOMAD_CPU_LIMIT',
           'container.mem': 'NOMAD_MEMORY_LIMIT',
           'git.sha': 'NOMAD_META_SHA',
+          'nomad.node.id': 'NOMAD_NODE_ID',
+          'nomad.node.name': 'NOMAD_NODE_NAME',
           'nomad.task_name': 'NOMAD_TASK_NAME',
           'provider.region': 'NOMAD_REGION',
           'provider.datacenter': 'NOMAD_DC'
