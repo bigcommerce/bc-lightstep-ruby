@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 h3. Pending Release
 
+- Set default log level to INFO when no logger is provided
+
 h3. 1.6.4
 
 - Add `nomad.node.id` and `nomad.node.name` span tags via ENV mappings
