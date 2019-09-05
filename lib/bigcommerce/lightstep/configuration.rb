@@ -104,8 +104,11 @@ module Bigcommerce
         self.max_log_records = ENV.fetch('LIGHTSTEP_MAX_LOG_RECORDS', 1_000).to_i
         self.max_reporting_interval_seconds = ENV.fetch('LIGHTSTEP_MAX_REPORTING_INTERVAL_SECONDS', 3.0).to_f
 
+        default_logger = ::Logger.new(STDOUT)
+        default_logger.level = ::Logger::INFO
+        self.logger = defined?(Rails) ? Rails.logger : default_logger
         self.verbosity = ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i
-        self.logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
+
         self.enabled = ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i.positive?
         self.interceptors = ::Bigcommerce::Lightstep::Interceptors::Registry.new
       end

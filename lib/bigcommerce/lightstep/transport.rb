@@ -65,7 +65,10 @@ module Bigcommerce
         @continue_timeout = continue_timeout
         @keep_alive_timeout = keep_alive_timeout.to_i
         @access_token = access_token.to_s
-        @logger = logger || ::Logger.new(STDOUT)
+
+        default_logger = ::Logger.new(STDOUT)
+        default_logger.level = ::Logger::INFO
+        @logger = logger || default_logger
       end
 
       ##
