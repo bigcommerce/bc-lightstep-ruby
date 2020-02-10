@@ -17,15 +17,4 @@
 #
 source 'https://rubygems.org'
 
-gem 'null-logger',             '~> 0.1', require: 'null_logger'
-gem 'redis',                   '~> 4'
-
-group :development do
-  gem 'bundler-audit',         '~> 0.6'
-  gem 'rspec',                 '~> 3.8'
-  gem 'rspec_junit_formatter', '~> 0.4.1'
-  gem 'rubocop',               '~> 0.74'
-  gem 'simplecov',             '~> 0.16', require: false
-end
-
 gemspec
