@@ -31,11 +31,19 @@ Gem::Specification.new do |spec|
 
   spec.files         = Dir['README.md', 'CHANGELOG.md', 'CODE_OF_CONDUCT.md', 'lib/**/*', 'bc-lightstep-ruby.gemspec']
   spec.require_paths = ['lib']
+  spec.required_ruby_version = '>= 2.6'
 
   spec.add_development_dependency 'bundler', '~> 1.11'
+  spec.add_development_dependency 'bundler-audit', '~> 0.6'
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'rspec', '~> 3.8'
+  spec.add_development_dependency 'rspec_junit_formatter', '~> 0.4'
+  spec.add_development_dependency 'rubocop', '~> 0.79'
+  spec.add_development_dependency 'simplecov', '~> 0.15'
+  spec.add_development_dependency 'pry', '>= 0.12'
+
+  spec.add_development_dependency 'null-logger', '~> 0.1'
+  spec.add_development_dependency 'redis', '~> 4'
 
   spec.add_runtime_dependency 'lightstep', '~> 0.13.0'
   spec.add_runtime_dependency 'faraday', ['>= 0.8', '<= 0.15.4']
