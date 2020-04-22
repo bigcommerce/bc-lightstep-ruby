@@ -45,10 +45,18 @@ bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd 
 | LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector. Optional. | '' | 
 | LIGHTSTEP_HOST | Host of the collector. | `lightstep-collector.linkerd` |
 | LIGHTSTEP_PORT | Port of the collector. | `4140` |
+| LIGHTSTEP_HTTP1_ERROR_CODE | The HTTP error code to report in spans for internal errors | 500 |
+| LIGHTSTEP_HTTP1_ERROR_CODE_MINIMUM | The minimum HTTP error code value to be considered an error for span tag purposes. | 500 |
+| LIGHTSTEP_CONTROLLER_PREFIX | The prefix for Rails controllers to use | `controllers.` |
 | LIGHTSTEP_SSL_VERIFY_PEER | If using 443 as the port, toggle SSL verification. | true |
 | LIGHTSTEP_MAX_BUFFERED_SPANS | The maximum number of spans to buffer before dropping. | `1_000` |
 | LIGHTSTEP_MAX_LOG_RECORDS | Maximum number of log records on a span to accept. | `1_000` |
 | LIGHTSTEP_MAX_REPORTING_INTERVAL_SECONDS | The maximum number of seconds to wait before flushing the report to the collector. | 3.0 |
+| LIGHTSTEP_ACTIVE_RECORD_ENABLED | Whether or not to add ActiveRecord mysql spans. Only works with mysql2 gem. | 1 |
+| LIGHTSTEP_ACTIVE_RECORD_ALLOW_AS_ROOT_SPAN | Allow ActiveRecord mysql spans to be the root span? | 0 |
+| LIGHTSTEP_ACTIVE_RECORD_SPAN_PREFIX | What to prefix the ActiveRecord mysql span with | '' |
+| LIGHTSTEP_REDIS_ALLOW_AS_ROOT_SPAN | Allow redis to be the root span? | 0 |
+| LIGHTSTEP_REDIS_EXCLUDED_COMMANDS | Redis commands to exclude from spans. Comma-separated list. | ping |
 | LIGHTSTEP_VERBOSITY | The verbosity level of lightstep logs. | 1 |
 
 Most systems will only need to customize the component name.
@@ -77,7 +85,7 @@ or systems outside of your instrumenting control.
 
 ### Redis
 
-This gem will automatically detect and instrumnent Redis calls when they are made using the `Redis::Client` class.
+This gem will automatically detect and instrument Redis calls when they are made using the `Redis::Client` class.
 It will set as tags on the span the host, port, db instance, and the command (but no arguments). 
 
 Note that this will not record redis timings if they are a root span. This is to prevent trace spamming. You can 
@@ -85,6 +93,17 @@ re-enable this by setting the `redis_allow_root_spans` configuration option to `
 
 It also excludes `ping` commands, and you can provide a custom list by setting the `redis_excluded_commands` 
 configuration option to an array of commands to exclude.
+
+### ActiveRecord and MySQL
+
+This gem will automatically instrument MySQL queries with spans when made with the `mysql2` gem and ActiveRecord.
+It will set as tags on the span the host, database type, database name, and a sanitized version of the SQL query made.
+The query will have no values - replaced with `?` - to ensure secure logging and no leaking of PII data.
+
+Note that this will not record mysql timings if they are a root span. This is to prevent trace spamming. You can
+configure this gem to allow it via ENV, but it is not recommended.
+
+By default, it will also exclude `COMMIT`, `SCHEMA`, and `SHOW FULL FIELDS` queries. 
 
 ## RSpec
 

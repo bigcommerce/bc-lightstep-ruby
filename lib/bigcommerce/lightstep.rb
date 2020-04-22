@@ -17,6 +17,7 @@
 #
 require 'lightstep'
 require 'faraday'
+require 'active_support/concern'
 require_relative 'lightstep/version'
 require_relative 'lightstep/errors'
 require_relative 'lightstep/interceptors/registry'
@@ -27,6 +28,8 @@ require_relative 'lightstep/transport_factory'
 require_relative 'lightstep/transport'
 require_relative 'lightstep/rails_controller_instrumentation'
 require_relative 'lightstep/middleware/faraday'
+require_relative 'lightstep/active_record/tracer'
+require_relative 'lightstep/active_record/adapter'
 require_relative 'lightstep/redis/tracer'
 
 ##
@@ -54,7 +57,10 @@ module Bigcommerce
       ::LightStep.instance.max_log_records = ::Bigcommerce::Lightstep.max_log_records
       ::LightStep.instance.report_period_seconds = ::Bigcommerce::Lightstep.max_reporting_interval_seconds
 
-      ::Bigcommerce::Lightstep::Redis::Wrapper.patch if ::Bigcommerce::Lightstep.enabled
+      return unless ::Bigcommerce::Lightstep.enabled
+
+      ::Bigcommerce::Lightstep::Redis::Wrapper.patch
+      ::Bigcommerce::Lightstep::ActiveRecord::Adapter.patch
     end
   end
 end
