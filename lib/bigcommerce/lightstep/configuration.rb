@@ -23,27 +23,30 @@ module Bigcommerce
     #
     module Configuration
       VALID_CONFIG_KEYS = {
-        component_name: '',
-        controller_trace_prefix: 'controllers.',
-        access_token: '',
-        host: 'lightstep-collector.linkerd',
+        component_name: ENV.fetch('LIGHTSTEP_COMPONENT_NAME', ''),
+        controller_trace_prefix: ENV.fetch('LIGHTSTEP_CONTROLLER_PREFIX', 'controllers.'),
+        access_token: ENV.fetch('LIGHTSTEP_ACCESS_TOKEN', ''),
+        host: ENV.fetch('LIGHTSTEP_HOST', 'lightstep-collector.linkerd'),
         interceptors: nil,
-        port: 4140,
-        ssl_verify_peer: true,
-        open_timeout: 20,
-        read_timeout: 20,
+        port: ENV.fetch('LIGHTSTEP_PORT', 4_140).to_i,
+        ssl_verify_peer: ENV.fetch('LIGHTSTEP_SSL_VERIFY_PEER', 1).to_i.positive?,
+        open_timeout: ENV.fetch('LIGHTSTEP_OPEN_TIMEOUT', 2).to_i,
+        read_timeout: ENV.fetch('LIGHTSTEP_READ_TIMEOUT', 2).to_i,
         continue_timeout: nil,
-        keep_alive_timeout: 2,
+        keep_alive_timeout: ENV.fetch('LIGHTSTEP_KEEP_ALIVE_TIMEOUT', 2).to_i,
         logger: nil,
-        verbosity: 1,
-        http1_error_code: 500,
-        http1_error_code_minimum: 500,
-        max_buffered_spans: 1_000,
-        max_log_records: 1_000,
-        max_reporting_interval_seconds: 3.0,
-        redis_excluded_commands: %w[ping],
-        redis_allow_root_spans: false,
-        enabled: true
+        verbosity: ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i,
+        http1_error_code: ENV.fetch('LIGHTSTEP_HTTP1_ERROR_CODE', 500).to_i,
+        http1_error_code_minimum: ENV.fetch('LIGHTSTEP_HTTP1_ERROR_CODE_MINIMUM', 500).to_i,
+        max_buffered_spans: ENV.fetch('LIGHTSTEP_MAX_BUFFERED_SPANS', 1_000).to_i,
+        max_log_records: ENV.fetch('LIGHTSTEP_MAX_LOG_RECORDS', 1_000).to_i,
+        max_reporting_interval_seconds: ENV.fetch('LIGHTSTEP_MAX_REPORTING_INTERVAL_SECONDS', 3.0).to_f,
+        redis_excluded_commands: ENV.fetch('LIGHTSTEP_REDIS_EXCLUDED_COMMANDS', 'ping').to_s.split(','),
+        redis_allow_root_spans: ENV.fetch('LIGHTSTEP_REDIS_ALLOW_AS_ROOT_SPAN', 0).to_i.positive?,
+        active_record: ENV.fetch('LIGHTSTEP_ACTIVE_RECORD_ENABLED', 1).to_i.positive?,
+        active_record_allow_root_spans: ENV.fetch('LIGHTSTEP_ACTIVE_RECORD_ALLOW_AS_ROOT_SPAN', 0).to_i.positive?,
+        active_record_span_prefix: ENV.fetch('LIGHTSTEP_ACTIVE_RECORD_SPAN_PREFIX', ''),
+        enabled: ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i.positive?
       }.freeze
 
       attr_accessor *VALID_CONFIG_KEYS.keys
@@ -94,22 +97,11 @@ module Bigcommerce
         VALID_CONFIG_KEYS.each do |k, v|
           send("#{k}=".to_sym, v)
         end
-        self.component_name = ENV.fetch('LIGHTSTEP_COMPONENT_NAME', '')
-        self.access_token = ENV.fetch('LIGHTSTEP_ACCESS_TOKEN', '')
-        self.host = ENV.fetch('LIGHTSTEP_HOST', 'lightstep-collector.linkerd')
-        self.port = ENV.fetch('LIGHTSTEP_PORT', 4140).to_i
-        self.ssl_verify_peer = ENV.fetch('LIGHTSTEP_SSL_VERIFY_PEER', true)
-
-        self.max_buffered_spans = ENV.fetch('LIGHTSTEP_MAX_BUFFERED_SPANS', 1_000).to_i
-        self.max_log_records = ENV.fetch('LIGHTSTEP_MAX_LOG_RECORDS', 1_000).to_i
-        self.max_reporting_interval_seconds = ENV.fetch('LIGHTSTEP_MAX_REPORTING_INTERVAL_SECONDS', 3.0).to_f
 
         default_logger = ::Logger.new(STDOUT)
         default_logger.level = ::Logger::INFO
         self.logger = defined?(Rails) ? Rails.logger : default_logger
-        self.verbosity = ENV.fetch('LIGHTSTEP_VERBOSITY', 1).to_i
 
-        self.enabled = ENV.fetch('LIGHTSTEP_ENABLED', 1).to_i.positive?
         self.interceptors = ::Bigcommerce::Lightstep::Interceptors::Registry.new
       end
 

@@ -2,6 +2,10 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.1.0
+
+- Add support for automatically-generated mysql spans in tracing
+
 ### 2.0.0
 
 - Drop support for Ruby < 2.6

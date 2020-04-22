@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.6'
 
+  spec.add_development_dependency 'activerecord', '> 4'
   spec.add_development_dependency 'bundler', '~> 1.11'
   spec.add_development_dependency 'bundler-audit', '~> 0.6'
   spec.add_development_dependency 'rake', '>= 12.0'
@@ -45,6 +46,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'null-logger', '~> 0.1'
   spec.add_development_dependency 'redis', '~> 4'
 
+  spec.add_runtime_dependency 'activesupport', '>= 4'
   spec.add_runtime_dependency 'lightstep', '~> 0.13.0'
   spec.add_runtime_dependency 'faraday', ['>= 0.8', '<= 0.15.4']
 end

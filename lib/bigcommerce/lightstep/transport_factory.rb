@@ -32,6 +32,10 @@ module Bigcommerce
           encryption: ::Bigcommerce::Lightstep.port.to_i == 443 ? ::Bigcommerce::Lightstep::Transport::ENCRYPTION_TLS : ::Bigcommerce::Lightstep::Transport::ENCRYPTION_NONE,
           ssl_verify_peer: ::Bigcommerce::Lightstep.ssl_verify_peer,
           access_token: ::Bigcommerce::Lightstep.access_token,
+          open_timeout: ::Bigcommerce::Lightstep.open_timeout,
+          read_timeout: ::Bigcommerce::Lightstep.read_timeout,
+          continue_timeout: ::Bigcommerce::Lightstep.continue_timeout,
+          keep_alive_timeout: ::Bigcommerce::Lightstep.keep_alive_timeout,
           logger: ::Bigcommerce::Lightstep.logger
         )
       end
