@@ -73,7 +73,7 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
         let(:keys) { {} }
         let(:env) do
           {
-              'HOSTNAME' => 'asdf1234',
+            'HOSTNAME' => 'asdf1234',
           }
         end
 
@@ -88,14 +88,14 @@ describe Bigcommerce::Lightstep::Interceptors::Env do
         let(:keys) { {} }
         let(:env) do
           {
-              'NOMAD_CPU_LIMIT' => '128',
-              'NOMAD_MEMORY_LIMIT' => '512',
-              'NOMAD_META_SHA' => '770ecc256e414c81344caa78eaa0c9272a375c71',
-              'NOMAD_NODE_ID' => 'asdf1234',
-              'NOMAD_NODE_NAME' => 'nomad-client-abc789',
-              'NOMAD_TASK_NAME' => 'foo-bar',
-              'NOMAD_REGION' => 'us',
-              'NOMAD_DC' => 'us-central1-a'
+            'NOMAD_CPU_LIMIT' => '128',
+            'NOMAD_MEMORY_LIMIT' => '512',
+            'NOMAD_META_SHA' => '770ecc256e414c81344caa78eaa0c9272a375c71',
+            'NOMAD_NODE_ID' => 'asdf1234',
+            'NOMAD_NODE_NAME' => 'nomad-client-abc789',
+            'NOMAD_TASK_NAME' => 'foo-bar',
+            'NOMAD_REGION' => 'us',
+            'NOMAD_DC' => 'us-central1-a'
           }
         end
 

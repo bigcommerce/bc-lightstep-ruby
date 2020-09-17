@@ -47,6 +47,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'redis', '~> 4'
 
   spec.add_runtime_dependency 'activesupport', '>= 4'
-  spec.add_runtime_dependency 'lightstep', '~> 0.13.0'
-  spec.add_runtime_dependency 'faraday', ['>= 0.8', '<= 0.15.4']
+  spec.add_runtime_dependency 'lightstep', '~> 0.16.0'
+  spec.add_runtime_dependency 'faraday', ['>= 0.8', '<= 0.17.3']
 end

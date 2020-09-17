@@ -26,7 +26,7 @@ describe Bigcommerce::Lightstep::Transport do
       verbose: verbose
     }
   end
-  let(:transport) { described_class.new(params) }
+  let(:transport) { described_class.new(**params) }
 
   describe 'initialization' do
     subject { transport }
