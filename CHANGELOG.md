@@ -2,6 +2,11 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.1.1
+
+- Bump lightstep gem to 0.16.0
+- Bump faraday gem to <= 0.17.3
+
 ### 2.1.0
 
 - Add support for automatically-generated mysql spans in tracing
