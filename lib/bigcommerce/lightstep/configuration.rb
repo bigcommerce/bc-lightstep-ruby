@@ -98,7 +98,7 @@ module Bigcommerce
           send("#{k}=".to_sym, v)
         end
 
-        default_logger = ::Logger.new(STDOUT)
+        default_logger = ::Logger.new($stdout)
         default_logger.level = ::Logger::INFO
         self.logger = defined?(Rails) ? Rails.logger : default_logger
 

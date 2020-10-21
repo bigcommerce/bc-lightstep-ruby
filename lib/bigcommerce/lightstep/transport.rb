@@ -34,6 +34,22 @@ module Bigcommerce
       LIGHTSTEP_PORT = 443
       REPORTS_API_ENDPOINT = '/api/v0/reports'
 
+      DEFAULT_OPEN_TIMEOUT = 20
+      DEFAULT_READ_TIMEOUT = 20
+      DEFAULT_KEEPALIVE_TIMEOUT = 2
+      DEFAULT_SSL_PORT = 443
+
+      ##
+      # Verbosity levels for the transport
+      #
+      class Verbosity
+        FATAL = 0
+        ERROR = 1
+        WARN = 2
+        INFO = 3
+        DEBUG = 4
+      end
+
       # Initialize the transport
       # @param host [String] host of the domain to the endpoind to push data
       # @param port [Numeric] port on which to connect
@@ -44,31 +60,34 @@ module Bigcommerce
       # @return [Transport]
       def initialize(
         access_token:,
-        host: LIGHTSTEP_HOST,
-        port: LIGHTSTEP_PORT,
-        verbose: 0,
-        encryption: ENCRYPTION_TLS,
+        host: nil,
+        port: nil,
+        verbose: nil,
+        encryption: nil,
         ssl_verify_peer: true,
-        open_timeout: 2,
-        read_timeout: 2,
+        ssl_port: nil,
+        open_timeout: nil,
+        read_timeout: nil,
         continue_timeout: nil,
-        keep_alive_timeout: 2,
+        keep_alive_timeout: nil,
         logger: nil
       )
-        @host = host
-        @port = port
-        @verbose = verbose
-        @encryption = encryption
+        @host = host | LIGHTSTEP_HOST
+        @port = port || LIGHTSTEP_PORT
+        @verbose = verbose || Verbosity::FATAL
+        @encryption = encryption || ENCRYPTION_TLS
         @ssl_verify_peer = ssl_verify_peer
-        @open_timeout = open_timeout.to_i
-        @read_timeout = read_timeout.to_i
+        @ssl_port = (ssl_port || DEFAULT_SSL_PORT).to_i
+        @open_timeout = (open_timeout || DEFAULT_OPEN_TIMEOUT).to_i
+        @read_timeout = (read_timeout || DEFAULT_READ_TIMEOUT).to_i
         @continue_timeout = continue_timeout
-        @keep_alive_timeout = keep_alive_timeout.to_i
+        @keep_alive_timeout = (keep_alive_timeout || DEFAULT_KEEPALIVE_TIMEOUT).to_i
         @access_token = access_token.to_s
 
-        default_logger = ::Logger.new(STDOUT)
+        default_logger = ::Logger.new($stdout)
         default_logger.level = ::Logger::INFO
         @logger = logger || default_logger
+        super()
       end
 
       ##
@@ -78,12 +97,12 @@ module Bigcommerce
       # @return [NilClass]
       #
       def report(report)
-        @logger.info report if @verbose >= 3
+        @logger.info report if @verbose >= Verbosity::INFO
 
         req = build_request(report)
         res = connection.request(req)
 
-        @logger.info res.to_s if @verbose >= 3
+        @logger.info res.to_s if @verbose >= Verbosity::INFO
 
         nil
       end
@@ -109,7 +128,7 @@ module Bigcommerce
       def connection
         unless @connection
           @connection = ::Net::HTTP.new(@host, @port)
-          if @port == 443
+          if @port == @ssl_port
             @connection.use_ssl = @encryption == ENCRYPTION_TLS
             @connection.verify_mode = ::OpenSSL::SSL::VERIFY_NONE unless @ssl_verify_peer
           end
