@@ -42,6 +42,12 @@ module Bigcommerce
   module Lightstep
     extend Configuration
 
+    ##
+    # Start the global tracer and configure LightStep
+    #
+    # @param [String] component_name
+    # @param [::Bigcommerce::Lightstep::TransportFactory] transport_factory
+    #
     def self.start(component_name: nil, transport_factory: nil)
       component_name ||= ::Bigcommerce::Lightstep.component_name
       transport_factory ||= ::Bigcommerce::Lightstep::TransportFactory.new

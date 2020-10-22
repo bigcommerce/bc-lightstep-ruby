@@ -30,7 +30,7 @@ module Bigcommerce
         OT_TAG_SAMPLED = 'ot-tracer-sampled'
 
         def initialize(app, service_name = nil)
-          @app = app
+          super(app)
           @service_name = (service_name || 'external').to_s
         end
 

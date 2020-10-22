@@ -43,6 +43,7 @@ module Bigcommerce
         # @param [Array<Symbol>] presets Specify presets that automatically setup keys
         #
         def initialize(keys: nil, env: nil, presets: [])
+          super()
           @keys = keys || {}
           @presets = presets || []
           @env = env || ENV
