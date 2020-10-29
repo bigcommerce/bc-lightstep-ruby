@@ -72,7 +72,7 @@ module Bigcommerce
         keep_alive_timeout: nil,
         logger: nil
       )
-        @host = host | LIGHTSTEP_HOST
+        @host = host || LIGHTSTEP_HOST
         @port = port || LIGHTSTEP_PORT
         @verbose = verbose || Verbosity::FATAL
         @encryption = encryption || ENCRYPTION_TLS

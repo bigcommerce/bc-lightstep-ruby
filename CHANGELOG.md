@@ -2,7 +2,10 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.2.0
+
 - Only set error tag in exceptions if not already set
+- Update to Rubocop 1.0
 
 ### 2.1.1
 
