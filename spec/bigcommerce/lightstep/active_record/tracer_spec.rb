@@ -105,14 +105,14 @@ describe Bigcommerce::Lightstep::ActiveRecord::Tracer do
       end
     end
 
-    context 'if the trace raises an exception' do
+    context 'when the trace raises an exception' do
       let(:exception) { StandardError.new('Oh noes') }
 
       before do
         allow(caller).to receive(:foo).and_raise(exception)
       end
 
-      it 'should trace the result and add an error tag to the span' do
+      it 'traces the result and add an error tag to the span' do
         expect(mock_tracer).to receive(:start_span).with(key).and_call_original
         expect(mock_tracer.span).to receive(:set_tag).with('db.host', host).ordered
         expect(mock_tracer.span).to receive(:set_tag).with('db.type', adapter).ordered
@@ -125,6 +125,20 @@ describe Bigcommerce::Lightstep::ActiveRecord::Tracer do
         expect(caller).to receive(:foo).once
 
         expect { subject }.to raise_error(exception)
+      end
+
+      context 'when the error tag on the span is already set' do
+        before do
+          mock_tracer.span.set_tag('error', false)
+        end
+
+        it 'does not set the error tag' do
+          expect(caller).to receive(:foo).once
+          expect do
+            subject
+            expect(mock_tracer.span.tags['error']).to be_falsey
+          end.to raise_error(exception)
+        end
       end
     end
   end
