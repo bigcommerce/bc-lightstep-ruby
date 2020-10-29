@@ -66,7 +66,7 @@ module Bigcommerce
             result = yield inner_span
           end
         rescue StandardError
-          span.set_tag('error', true)
+          span.set_tag('error', true) unless span.tags.key?('error')
           raise
         ensure
           # finish this span if the reporter is initialized
