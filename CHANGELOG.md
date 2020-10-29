@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+- Only set error tag in exceptions if not already set
+
 ### 2.1.1
 
 - Bump lightstep gem to 0.16.0
