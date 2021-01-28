@@ -128,7 +128,7 @@ module Bigcommerce
       def determine_parent(context:)
         # first attempt to find parent from args, if not, use carrier (headers) to lookup parent
         # 1 = FORMAT_TEXT_MAP (this constant is removed in future lightstep versions)
-        current_parent = context.is_a?(::LightStep::SpanContext) ? context : tracer.extract(1, context || {})
+        current_parent = extract_parent_from_context(context)
         # if no passed in parent, use the active thread parent
         current_parent = active_span if current_parent.nil?
         current_parent
@@ -154,6 +154,22 @@ module Bigcommerce
       #
       def mark_root_span(span)
         span.instance_variable_set(:@root_span, true)
+      end
+
+      ##
+      # @param [Hash|::LightStep::SpanContext] context
+      # @return [::LightStep::SpanContext]
+      # @return [NilClass]
+      #
+      def extract_parent_from_context(context)
+        return context if context.is_a?(::LightStep::SpanContext)
+
+        tracer.extract(1, context || {})
+      rescue StandardError => _e
+        # sometimes LightStep, when `start` is not run first, will error here. This protects this until the upstream
+        # library can be fixed. We essentially just want to silently no-op here, as this failing simply means there's
+        # no context to extract.
+        nil
       end
     end
   end
