@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+- Fix issue where parent span determination can be nil if lightstep is not initialized
+
 ### 2.2.1
 
 - Only set error tag in exceptions if not already set
