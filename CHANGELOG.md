@@ -2,7 +2,10 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.2.2
+
 - Fix issue where parent span determination can be nil if lightstep is not initialized
+- Add tests for Ruby 2.7
 
 ### 2.2.1
 
