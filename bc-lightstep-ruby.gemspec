@@ -15,7 +15,7 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-$:.push File.expand_path('../lib', __FILE__)
+$:.push File.expand_path('lib', __dir__)
 require 'bigcommerce/lightstep/version'
 
 Gem::Specification.new do |spec|
@@ -46,6 +46,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'redis', '~> 4'
 
   spec.add_runtime_dependency 'activesupport', '>= 4'
-  spec.add_runtime_dependency 'lightstep', '~> 0.16.0'
+  spec.add_runtime_dependency 'lightstep', '~> 0.17.0'
   spec.add_runtime_dependency 'faraday', ['>= 0.8', '<= 0.17.3']
 end

@@ -52,7 +52,7 @@ module Bigcommerce
           return yield unless @tracer
 
           # only take the command, not any arguments
-          command = statement.to_s.split(' ').first
+          command = statement.to_s.split.first
 
           # skip excluded commands
           return yield if excluded?(command.to_s)

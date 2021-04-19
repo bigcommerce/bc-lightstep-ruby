@@ -32,7 +32,7 @@ module Bigcommerce
           @tracer = tracer || ::Bigcommerce::Lightstep::Tracer.instance
           @span_prefix = span_prefix || ::Bigcommerce::Lightstep.active_record_span_prefix
           @span_name = span_name || 'mysql'
-          @allow_root_spans = !allow_root_spans.nil? ? allow_root_spans : ::Bigcommerce::Lightstep.active_record_allow_root_spans
+          @allow_root_spans = allow_root_spans.nil? ? ::Bigcommerce::Lightstep.active_record_allow_root_spans : allow_root_spans
         end
 
         ##
@@ -68,7 +68,7 @@ module Bigcommerce
         # @return [String]
         #
         def key
-          !@span_prefix.to_s.empty? ? "#{@span_prefix}.mysql" : 'mysql'
+          @span_prefix.to_s.empty? ? 'mysql' : "#{@span_prefix}.mysql"
         end
 
         ##
