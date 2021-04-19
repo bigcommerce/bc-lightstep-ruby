@@ -34,7 +34,7 @@ module Bigcommerce
         }.freeze
 
         PRESET_HOSTNAME = {
-          'hostname': 'HOSTNAME'
+          hostname: 'HOSTNAME'
         }.freeze
 
         ##

@@ -19,6 +19,7 @@ module Bigcommerce
   module Lightstep
     module Errors
       class Error < StandardError; end
+
       class InvalidAccessToken < Error; end
     end
   end
