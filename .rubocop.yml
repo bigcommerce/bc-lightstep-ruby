@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
   NewCops: enable
   Exclude:
     - spec/**/*
@@ -10,6 +10,8 @@ AllCops:
     - log/**/*
     - Rakefile
     - bc-lightstep-ruby.gemspec
+require:
+  - rubocop-performance
 
 Lint/AmbiguousOperator:
   Enabled: false

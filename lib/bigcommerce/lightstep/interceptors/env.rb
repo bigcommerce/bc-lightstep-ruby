@@ -80,7 +80,8 @@ module Bigcommerce
             @values = {}
             @keys.each do |span_key, env_key|
               value = @env.fetch(env_key.to_s, nil)
-              value = value.nil? ? '' : value
+              value = '' if value.nil?
+
               @values[span_key.to_s.downcase.tr('-', '_').strip] = value
             end
             @values

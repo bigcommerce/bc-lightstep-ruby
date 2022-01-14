@@ -18,7 +18,7 @@ require 'spec_helper'
 describe Bigcommerce::Lightstep::Transport do
   let(:access_token) { 'abcd1234' }
   let(:verbose) { 3 }
-  let(:logger) { NullLogger.new }
+  let(:logger) { ::Logger.new(::File::NULL) }
   let(:params) do
     {
       access_token: access_token,

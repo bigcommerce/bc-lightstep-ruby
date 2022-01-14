@@ -41,7 +41,7 @@ module Bigcommerce
         # @return [Boolean]
         #
         def self.enabled?
-          defined?(::ActiveRecord) && ::Bigcommerce::Lightstep.active_record && ::ActiveRecord::Base.connection_config[:adapter].to_s.downcase == 'mysql2'
+          defined?(::ActiveRecord) && ::Bigcommerce::Lightstep.active_record && ::ActiveRecord::Base.connection_config[:adapter].to_s.casecmp('mysql2').zero?
         rescue StandardError => e
           ::Bigcommerce::Lightstep.logger&.warn "Failed to determine ActiveRecord database adapter in bc-lightstep-ruby initializer: #{e.message}"
           false
@@ -56,7 +56,7 @@ module Bigcommerce
           return execute_without_inst(sql, name) unless ::Bigcommerce::Lightstep.active_record
 
           sanitized_sql = lightstep_sanitize_sql(sql)
-          name = name.to_s.strip.empty? ? 'QUERY' : name
+          name = 'QUERY' if name.to_s.strip.empty?
 
           # we dont need to track all sql
           return execute_without_inst(sql, name) if lightstep_skip_tracing?(name, sanitized_sql)
