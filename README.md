@@ -1,6 +1,6 @@
 # bc-lightstep-ruby - LightStep distributed tracing
 
-[![CircleCI](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/main.svg?style=svg)](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/main) [![Gem Version](https://badge.fury.io/rb/bc-lightstep-ruby.svg)](https://badge.fury.io/rb/bc-lightstep-ruby) [![Inline docs](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby.svg?branch=main)](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby)
+[![CircleCI](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/main.svg?style=svg)](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/main) [![Gem Version](https://badge.fury.io/rb/bc-lightstep-ruby.svg)](https://badge.fury.io/rb/bc-lightstep-ruby) [![Inline docs](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby.svg?branch=main)](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby) [![Maintainability](https://api.codeclimate.com/v1/badges/72191c29a56368431942/maintainability)](https://codeclimate.com/github/bigcommerce/bc-lightstep-ruby/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/72191c29a56368431942/test_coverage)](https://codeclimate.com/github/bigcommerce/bc-lightstep-ruby/test_coverage)
 
 Adds [LightStep](https://lightstep.com) tracing support for Ruby. This is an extension of the 
 [LightStep ruby gem](https://github.com/lightstep/lightstep-tracer-ruby) and adds extra functionality and resiliency.
@@ -142,7 +142,6 @@ so don't build interceptors that require lots of processing power or that would 
 Provided out of the box is an interceptor to automatically inject ENV vars into span tags. You can configure like so:
 
 ```ruby
-
 Bigcommerce::Lightstep.configure do |c|
   c.interceptors.use(::Bigcommerce::Lightstep::Interceptors::Env.new(
     keys: {

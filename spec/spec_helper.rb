@@ -16,7 +16,6 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require_relative 'simplecov_helper'
 require 'pry'
-require 'null_logger'
 require 'bigcommerce/lightstep'
 
 Dir["#{File.join(File.dirname(__FILE__), 'support')}/**/*.rb"].each {|f| require f }
@@ -36,7 +35,7 @@ RSpec.configure do |config|
 
   config.before do
     Bigcommerce::Lightstep.configure do |c|
-      c.logger = ::NullLogger.new
+      c.logger = ::Logger.new(::File::NULL)
     end
   end
 end

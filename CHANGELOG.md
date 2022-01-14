@@ -2,6 +2,10 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+* Add Ruby 3.1 support
+* Drop Ruby 2.6 support
+* Add CodeClimate coverage
+
 ### 2.3.1
 
 - Loosen faraday dependency
