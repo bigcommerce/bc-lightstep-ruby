@@ -2,6 +2,7 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+* Use zeitwerk for autoloading
 * Add Ruby 3.1 support
 * Drop Ruby 2.6 support
 * Add CodeClimate coverage
@@ -121,7 +122,7 @@ Changelog for the bc-lightstep-ruby gem.
 
 - Better handling of exceptions and tagged errors
 - Lower timeouts for collector connections to reduce impact if collector is down/unreachable
-- Always ensure spans are reported even in the case of exceptional failure 
+- Always ensure spans are reported even in the case of exceptional failure
 
 ### 1.1.6
 
@@ -130,7 +131,7 @@ Changelog for the bc-lightstep-ruby gem.
 ### 1.1.5
 
 - Pin lightstep gem to 0.11.x due to backwards-incompatible change in 0.12.x
- 
+
 ### 1.1.4
 
 - Add enabled setting to explicitly disable lightstep at runtime. Can be toggled with LIGHTSTEP_ENABLED ENV var.
@@ -141,7 +142,7 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### 1.1.2
 
-- Prevent span from starting if the reporter is not yet configured, as LightStep gem does not guard this case 
+- Prevent span from starting if the reporter is not yet configured, as LightStep gem does not guard this case
 
 ### 1.1.1
 
@@ -150,7 +151,7 @@ Changelog for the bc-lightstep-ruby gem.
 ### 1.1.0
 
 - Add Faraday middleware for automatic tracing of outbound service calls
- 
+
 ### 1.0.5
 
 - Do not send GET params in rails controller instrumentation for http.url tag
@@ -163,7 +164,7 @@ Changelog for the bc-lightstep-ruby gem.
 ### 1.0.3
 
 - Fix bug where active parent span was persisting between requests in rails controller requests
- 
+
 ### 1.0.2
 
 - Add Bigcommerce::Lightstep::Rails::ControllerInstrumentation module for tracing H1 controllers in Rails

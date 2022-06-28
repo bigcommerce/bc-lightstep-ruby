@@ -50,4 +50,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'activesupport', '>= 4'
   spec.add_runtime_dependency 'lightstep', '~> 0.17.0'
   spec.add_runtime_dependency 'faraday', ['>= 0.8', '< 2']
+  spec.add_runtime_dependency 'zeitwerk', '>= 2'
 end
