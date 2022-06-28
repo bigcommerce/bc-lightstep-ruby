@@ -3,6 +3,7 @@ Changelog for the bc-lightstep-ruby gem.
 ### Pending Release
 
 * Use zeitwerk for autoloading
+* Add CODEOWNERS and GitHub PR Template
 * Add Ruby 3.1 support
 * Drop Ruby 2.6 support
 * Add CodeClimate coverage
