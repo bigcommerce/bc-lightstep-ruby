@@ -9,6 +9,6 @@
 ## Testing
 
 <!---
-Provide as much information as you can about how you tested and
-how another developer can test.
+  Provide as much information as you can about how you tested and
+  how another developer can test.
 --->
