@@ -2,6 +2,7 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+* Add `::Bigcommerce::Lightstep::Traceable` module for tracing individual methods
 * Use zeitwerk for autoloading
 * Add CODEOWNERS and GitHub PR Template
 * Add Ruby 3.1 support

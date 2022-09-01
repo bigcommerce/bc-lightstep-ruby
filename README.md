@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/main.svg?style=svg)](https://circleci.com/gh/bigcommerce/bc-lightstep-ruby/tree/main) [![Gem Version](https://badge.fury.io/rb/bc-lightstep-ruby.svg)](https://badge.fury.io/rb/bc-lightstep-ruby) [![Inline docs](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby.svg?branch=main)](http://inch-ci.org/github/bigcommerce/bc-lightstep-ruby) [![Maintainability](https://api.codeclimate.com/v1/badges/72191c29a56368431942/maintainability)](https://codeclimate.com/github/bigcommerce/bc-lightstep-ruby/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/72191c29a56368431942/test_coverage)](https://codeclimate.com/github/bigcommerce/bc-lightstep-ruby/test_coverage)
 
-Adds [LightStep](https://lightstep.com) tracing support for Ruby. This is an extension of the 
+Adds [LightStep](https://lightstep.com) tracing support for Ruby. This is an extension of the
 [LightStep ruby gem](https://github.com/lightstep/lightstep-tracer-ruby) and adds extra functionality and resiliency.
 
 ## Installation
@@ -41,8 +41,8 @@ bc-lightstep-ruby can be automatically configured from these ENV vars, if you'd 
 | Name | Description |
 | ---- | ----------- |
 | LIGHTSTEP_ENABLED | Flag to determine whether to broadcast spans. Defaults to (1) enabled, 0 will disable.| 1 |
-| LIGHTSTEP_COMPONENT_NAME | The component name to use | '' | 
-| LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector. Optional. | '' | 
+| LIGHTSTEP_COMPONENT_NAME | The component name to use | '' |
+| LIGHTSTEP_ACCESS_TOKEN | The access token to use to connect to the collector. Optional. | '' |
 | LIGHTSTEP_HOST | Host of the collector. | `lightstep-collector.linkerd` |
 | LIGHTSTEP_PORT | Port of the collector. | `4140` |
 | LIGHTSTEP_HTTP1_ERROR_CODE | The HTTP error code to report in spans for internal errors | 500 |
@@ -86,12 +86,12 @@ or systems outside of your instrumenting control.
 ### Redis
 
 This gem will automatically detect and instrument Redis calls when they are made using the `Redis::Client` class.
-It will set as tags on the span the host, port, db instance, and the command (but no arguments). 
+It will set as tags on the span the host, port, db instance, and the command (but no arguments).
 
-Note that this will not record redis timings if they are a root span. This is to prevent trace spamming. You can 
+Note that this will not record redis timings if they are a root span. This is to prevent trace spamming. You can
 re-enable this by setting the `redis_allow_root_spans` configuration option to `true`.
 
-It also excludes `ping` commands, and you can provide a custom list by setting the `redis_excluded_commands` 
+It also excludes `ping` commands, and you can provide a custom list by setting the `redis_excluded_commands`
 configuration option to an array of commands to exclude.
 
 ### ActiveRecord and MySQL
@@ -103,7 +103,27 @@ The query will have no values - replaced with `?` - to ensure secure logging and
 Note that this will not record mysql timings if they are a root span. This is to prevent trace spamming. You can
 configure this gem to allow it via ENV, but it is not recommended.
 
-By default, it will also exclude `COMMIT`, `SCHEMA`, and `SHOW FULL FIELDS` queries. 
+By default, it will also exclude `COMMIT`, `SCHEMA`, and `SHOW FULL FIELDS` queries.
+
+### Individual methods
+
+You can easily instrument individual methods with the Traceable module and `trace` method:
+
+```ruby
+class MyService
+  include ::Bigcommerce::Lightstep::Traceable
+
+  trace :call, 'operation.do-my-thing' do |span:, product:, options:|
+    span.set_tag('store_id', request.store_id)
+  end
+  # or, with no block:
+  trace :call, 'operation.do-my-thing'
+
+  def call(product:, options:)
+    # ...
+  end
+end
+```
 
 ## RSpec
 
@@ -130,7 +150,7 @@ dynamically inject tags or alter spans as they are collected. You can configure 
 Bigcommerce::Lightstep.configure do |c|
   c.interceptors.use(MyInterceptor, an_option: 123)
   # or, alternatively:
-  c.interceptors.use(MyInterceptor.new(an_option: 123)) 
+  c.interceptors.use(MyInterceptor.new(an_option: 123))
 end
 ```
 
@@ -156,21 +176,21 @@ The `keys` argument allows you to pass a `span tag => ENV key` mapping that will
 `presets` argument comes with a bunch of preset mappings you can use rather than manually mapping them yourself.
 
 Note that this interceptor _must_ be instantiated in configuration, rather than passing the class and options,
-as it needs to pre-materialize the ENV values to reduce CPU usage. 
+as it needs to pre-materialize the ENV values to reduce CPU usage.
 
 ## License
 
-Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved 
+Copyright (c) 2018-present, BigCommerce Pty. Ltd. All rights reserved
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-documentation files (the "Software"), to deal in the Software without restriction, including without limitation the 
-rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
 persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the 
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
 Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
