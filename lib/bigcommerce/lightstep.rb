@@ -18,19 +18,16 @@
 require 'lightstep'
 require 'faraday'
 require 'active_support/concern'
-require_relative 'lightstep/version'
-require_relative 'lightstep/errors'
-require_relative 'lightstep/interceptors/registry'
-require_relative 'lightstep/interceptors/context'
-require_relative 'lightstep/configuration'
-require_relative 'lightstep/tracer'
-require_relative 'lightstep/transport_factory'
-require_relative 'lightstep/transport'
-require_relative 'lightstep/rails_controller_instrumentation'
-require_relative 'lightstep/middleware/faraday'
-require_relative 'lightstep/active_record/tracer'
-require_relative 'lightstep/active_record/adapter'
-require_relative 'lightstep/redis/tracer'
+
+# use Zeitwerk to lazily autoload all the files in the lib directory
+require 'zeitwerk'
+loader = ::Zeitwerk::Loader.new
+loader.tag = File.basename(__FILE__, '.rb')
+loader.inflector = ::Zeitwerk::GemInflector.new(__FILE__)
+loader.ignore("#{__dir__}/lightstep/rspec.rb")
+loader.ignore("#{File.dirname(__dir__)}/bc-lightstep-ruby.rb")
+loader.push_dir(File.dirname(__dir__))
+loader.setup
 
 ##
 # Main base module
