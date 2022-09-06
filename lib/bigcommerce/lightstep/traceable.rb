@@ -41,13 +41,22 @@ module Bigcommerce
         def trace(method_name, operation_name, tags: nil, &span_block)
           method_name = method_name.to_sym
           mod = Module.new
-          mod.define_method(method_name) do |args, &block|
+          mod.define_method(method_name) do |*args, &block|
             tracer = ::Bigcommerce::Lightstep::Tracer.instance
             tracer.start_span(operation_name) do |span|
               tags&.each { |k, v| span.set_tag(k.to_s, v) }
-              span_block&.send(:call, **args.merge(span: span))
               begin
-                super(**args, &block)
+                arg1 = args.first
+                # method has keyword argument signature (or single-hash positional argument)
+                if arg1.is_a?(Hash) && args.count == 1
+                  # add span as a kwarg
+                  span_block&.send(:call, **arg1.merge(span: span))
+                  super(**arg1, &block)
+                else
+                  # method has positional argument signature, so just add span to front
+                  span_block&.send(:call, *([span] + args))
+                  super(*args, &block)
+                end
               rescue StandardError => e
                 span.set_tag('error', true)
                 span.set_tag('error.message', e.message)

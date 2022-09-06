@@ -114,7 +114,7 @@ class MyService
   include ::Bigcommerce::Lightstep::Traceable
 
   trace :call, 'operation.do-my-thing' do |span:, product:, options:|
-    span.set_tag('store_id', request.store_id)
+    span.set_tag('product_id', product.id)
   end
   # or, with no block:
   trace :call, 'operation.do-my-thing'
@@ -124,6 +124,45 @@ class MyService
   end
 end
 ```
+
+#### Tracing Positional Argument Methods
+
+For positional argument methods, the behavior is a bit different. In your trace call, if tracing a method with
+positional arguments, you'll need to have the block arguments be positional as well:
+
+```ruby
+class MyService
+  include ::Bigcommerce::Lightstep::Traceable
+
+  trace :positional, 'operation.do-my-thing' do |span, product, options|
+    span.set_tag('product_id', product.id)
+  end
+  def positional(product, options = {})
+    # ...
+  end
+end
+```
+
+Note that any default values in the argument will not carry over into the trace block. Secondly, with positional
+argument methods that have only a _single_ hash argument, since this library has no way to detect in that case if it
+is keyword-arguments or a single hash argument, the library will simply add the `span` to the hash itself, and you'll
+need to adjust the trace block accordingly:
+
+```ruby
+
+class MyService
+  include ::Bigcommerce::Lightstep::Traceable
+
+  trace :positional_single_hash_arg, 'operation.do-my-thing' do |my_hash|
+    my_hash[:span].set_tag('product_id', my_hash[:product_id])
+  end
+  def positional_single_hash_arg(my_hash)
+    # ...
+  end
+end
+```
+
+It is recommended for this reason - and others - to never use single-hash positional arguments in Ruby.
 
 ## RSpec
 

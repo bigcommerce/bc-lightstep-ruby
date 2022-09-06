@@ -61,5 +61,41 @@ describe Bigcommerce::Lightstep::Traceable do
         expect(subject).to eq name
       end
     end
+
+    context 'with a positional arguments method' do
+      subject { service.call_with_positional_args('foo', 'bar') }
+
+      it 'passes correctly to the span block and the method' do
+        expect(span).to receive(:set_tag).with('one', 'foo').ordered
+        expect(span).to receive(:set_tag).with('two', 'bar').ordered
+        expect(span).to receive(:set_tag).with('three', nil).ordered
+        expect(subject).to eq %w[foo bar baz]
+      end
+
+      context 'with a single hash argument' do
+        subject { service.call_with_single_hash_arg(my_hash) }
+
+        let(:my_hash) { { one: 'foo', two: 'bar' } }
+
+        it 'sets them on the span, but merges in the span to the passed hash' do
+          expect(span).to receive(:set_tag).with('one', 'foo').ordered
+          expect(span).to receive(:set_tag).with('two', 'bar').ordered
+          expect(subject).to eq my_hash
+        end
+      end
+
+      context 'with multiple hash arguments' do
+        subject { service.call_with_multiple_hash_args(hash_1, hash_2) }
+
+        let(:hash_1) { { one: 'foo' } }
+        let(:hash_2) { { two: 'bar' } }
+
+        it 'passes them as positional arguments to the trace block' do
+          expect(span).to receive(:set_tag).with('one', 'foo').ordered
+          expect(span).to receive(:set_tag).with('two', 'bar').ordered
+          expect(subject).to eq [hash_1, hash_2]
+        end
+      end
+    end
   end
 end
