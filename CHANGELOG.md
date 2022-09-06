@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.4.1
+
 * Support positional argument methods when using the `Traceable` trace method
 
 ### 2.4.0
