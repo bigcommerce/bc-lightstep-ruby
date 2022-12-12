@@ -2,6 +2,11 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.5.x
+
+* Drop support for Ruby 2
+* Remove unused NullLogger dev dependency
+
 ### 2.4.1
 
 * Support positional argument methods when using the `Traceable` trace method
