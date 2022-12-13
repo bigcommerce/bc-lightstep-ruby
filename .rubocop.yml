@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.0
   NewCops: enable
   Exclude:
     - spec/**/*
@@ -37,3 +37,7 @@ Metrics/PerceivedComplexity:
 
 Metrics/CyclomaticComplexity:
   Max: 10
+
+# We prefer explicit base references for refactoring safety
+Style/RedundantConstantBase:
+  Enabled: false
