@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+* Add test coverage for Ruby 3.2
+
 ### 2.5.x
 
 * Drop support for Ruby 2
