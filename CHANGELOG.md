@@ -7,7 +7,7 @@ Changelog for the bc-lightstep-ruby gem.
 * Add support for Rails/ActiveRecord 7
 * Add test coverage for Ruby 3.2
 
-### 2.5.x
+### 2.5.0
 
 * Drop support for Ruby 2
 * Remove unused NullLogger dev dependency
