@@ -36,12 +36,21 @@ module Bigcommerce
         end
 
         ##
-        # Note: we only support patching mysql2 gem at this point
+        # Note: we only support patching mysql2 gem at this point.
         #
         # @return [Boolean]
         #
         def self.enabled?
-          defined?(::ActiveRecord) && ::Bigcommerce::Lightstep.active_record && ::ActiveRecord::Base.connection_config[:adapter].to_s.casecmp('mysql2').zero?
+          return false unless defined?(::ActiveRecord) && ::Bigcommerce::Lightstep.active_record
+
+          adapter_name = if ::ActiveRecord::Base.respond_to?(:connection_config) # rails 6
+                           ::ActiveRecord::Base.connection_config[:adapter].to_s
+                         elsif ::ActiveRecord::Base.respond_to?(:connection_db_config) # rails 7
+                           ::ActiveRecord::Base.connection_db_config.configuration_hash[:adapter].to_s
+                         else
+                           'unknown'
+                         end
+          adapter_name.casecmp('mysql2')&.zero? == true
         rescue StandardError => e
           ::Bigcommerce::Lightstep.logger&.warn "Failed to determine ActiveRecord database adapter in bc-lightstep-ruby initializer: #{e.message}"
           false
@@ -51,9 +60,9 @@ module Bigcommerce
         # @param [String] sql The raw sql query
         # @param [String] name The type of sql query
         #
-        def execute_with_inst(sql, name = 'SQL')
+        def execute_with_inst(sql, name = 'SQL', async: false)
           # bail out early if not enabled. This should not get here, but is provided as a failsafe.
-          return execute_without_inst(sql, name) unless ::Bigcommerce::Lightstep.active_record
+          return execute_without_inst(sql, name, async: async) unless ::Bigcommerce::Lightstep.active_record
 
           sanitized_sql = lightstep_sanitize_sql(sql)
           name = 'QUERY' if name.to_s.strip.empty?
