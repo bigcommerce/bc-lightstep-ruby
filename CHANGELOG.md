@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.6.0
+
 * Add support for Rails/ActiveRecord 7
 * Add test coverage for Ruby 3.2
 
