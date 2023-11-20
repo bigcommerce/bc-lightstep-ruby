@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+* Loosen faraday dependency
+
 ### 2.6.0
 
 * Add support for Rails/ActiveRecord 7
