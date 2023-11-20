@@ -30,6 +30,10 @@ module Bigcommerce
           span.set_tag('http.content_type', request.format)
           span.set_tag('http.host', request.host)
           span.set_tag('span.kind', 'server')
+
+          # provide a hook for controllers to provide additional span tags
+          lightstep_additional_span_tags.each { |tag_name, value| span.set_tag(tag_name.to_s, value.to_s) }
+
           begin
             resp = yield
           rescue StandardError => _e
@@ -46,6 +50,15 @@ module Bigcommerce
         end
         tracer.clear_active_span!
         result
+      end
+
+      ##
+      # Get list of additional span tags
+      #
+      # @return [Hash]
+      #
+      def lightstep_additional_span_tags
+        {}
       end
 
       ##
