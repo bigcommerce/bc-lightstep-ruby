@@ -2,6 +2,10 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+### 2.6.1
+
+* Supports hook for controllers to specify additional span tags
+
 ### 2.6.0
 
 * Add support for Rails/ActiveRecord 7
