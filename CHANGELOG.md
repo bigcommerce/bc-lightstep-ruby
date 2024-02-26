@@ -4,6 +4,7 @@ Changelog for the bc-lightstep-ruby gem.
 
 * Do not instrument redis 5.x in this library for compatibility reasons; instead encourage moving away from
   this library and to OTel gems instead
+* Add CI suite for Ruby 3.3
 
 ### 2.6.1
 
