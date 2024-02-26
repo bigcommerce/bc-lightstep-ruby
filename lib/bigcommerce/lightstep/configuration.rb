@@ -95,7 +95,7 @@ module Bigcommerce
       #
       def reset
         VALID_CONFIG_KEYS.each do |k, v|
-          send("#{k}=".to_sym, v)
+          send(:"#{k}=", v)
         end
 
         default_logger = ::Logger.new($stdout)
