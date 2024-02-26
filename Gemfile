@@ -17,4 +17,15 @@
 #
 source 'https://rubygems.org'
 
+gem 'activerecord', '> 4'
+gem 'bundler-audit', '~> 0.6'
+gem 'pry', '>= 0.12'
+gem 'rake', '>= 12.0'
+gem 'redis', ENV.fetch('REDIS_GEM_PIN', '~> 5').to_s
+gem 'rspec', '>= 3.8'
+gem 'rspec_junit_formatter', '~> 0.4'
+gem 'rubocop', '>= 1.0'
+gem 'rubocop-performance', '>= 1.5'
+gem 'simplecov', '~> 0.15'
+
 gemspec

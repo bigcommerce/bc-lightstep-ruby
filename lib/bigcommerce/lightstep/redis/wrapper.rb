@@ -25,6 +25,10 @@ module Bigcommerce
         class << self
           def patch
             require 'redis' # thread and fork safety
+
+            # do not patch Redis 5.0.0 or later, move to OpenTelemetry gems instead
+            return false unless defined?(::Redis) && ::Redis::VERSION < '5'
+
             return if @wrapped
 
             wrap unless @wrapped
