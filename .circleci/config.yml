@@ -7,18 +7,6 @@ orbs:
 defaults: &defaults
   notify_failure: false
 
-ruby_3_0_defaults: &ruby_3_0_defaults
-  <<: *defaults
-  e:
-    name: ruby/ruby
-    ruby-version: '3.0'
-
-ruby_3_1_defaults: &ruby_3_1_defaults
-  <<: *defaults
-  e:
-    name: ruby/ruby
-    ruby-version: '3.1'
-
 ruby_3_2_defaults: &ruby_3_2_defaults
   <<: *defaults
   e:
@@ -31,33 +19,14 @@ ruby_3_3_defaults: &ruby_3_3_defaults
     name: ruby/ruby
     ruby-version: '3.3'
 
+ruby_3_4_defaults: &ruby_3_4_defaults
+  <<: *defaults
+  e:
+    name: ruby/ruby
+    ruby-version: '3.4'
+
 workflows:
   version: 2
-  ruby_3_0:
-    jobs:
-      - ruby/bundle-audit:
-          <<: *ruby_3_0_defaults
-          name: ruby-3_0-bundle_audit
-      - ruby/rubocop:
-          <<: *ruby_3_0_defaults
-          name: ruby-3_0-rubocop
-      - ruby/rspec-unit:
-          <<: *ruby_3_0_defaults
-          name: ruby-3_0-rspec_unit
-          db: false
-  ruby_3_1:
-    jobs:
-      - ruby/bundle-audit:
-          <<: *ruby_3_1_defaults
-          name: ruby-3_1-bundle_audit
-      - ruby/rubocop:
-          <<: *ruby_3_1_defaults
-          name: ruby-3_1-rubocop
-      - ruby/rspec-unit:
-          <<: *ruby_3_1_defaults
-          name: ruby-3_1-rspec_unit
-          db: false
-          code-climate: false
   ruby_3_2:
     jobs:
       - ruby/bundle-audit:
@@ -70,7 +39,6 @@ workflows:
           <<: *ruby_3_2_defaults
           name: ruby-3_2-rspec_unit
           db: false
-          code-climate: false
   ruby_3_3:
     jobs:
       - ruby/bundle-audit:
@@ -83,4 +51,15 @@ workflows:
           <<: *ruby_3_3_defaults
           name: ruby-3_3-rspec_unit
           db: false
-          code-climate: false
+  ruby_3_4:
+    jobs:
+      - ruby/bundle-audit:
+          <<: *ruby_3_4_defaults
+          name: ruby-3_4-bundle_audit
+      - ruby/rubocop:
+          <<: *ruby_3_4_defaults
+          name: ruby-3_4-rubocop
+      - ruby/rspec-unit:
+          <<: *ruby_3_4_defaults
+          name: ruby-3_4-rspec_unit
+          db: false

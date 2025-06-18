@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = Dir['README.md', 'CHANGELOG.md', 'CODE_OF_CONDUCT.md', 'lib/**/*', 'bc-lightstep-ruby.gemspec']
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 3.0'
+  spec.required_ruby_version = '>= 3.2'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.add_runtime_dependency 'activesupport', '>= 4'

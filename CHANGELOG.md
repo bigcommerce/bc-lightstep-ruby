@@ -2,6 +2,9 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+* Add support for Ruby 3.4
+* Drop support for Ruby 3.0, 3.1
+
 ### 2.7.0
 
 * Do not instrument redis 5.x in this library for compatibility reasons; instead encourage moving away from

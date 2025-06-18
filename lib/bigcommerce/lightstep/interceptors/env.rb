@@ -105,12 +105,12 @@ module Bigcommerce
         ##
         # Handle access to values in a thread-safe manner
         #
-        def value_mutex(&block)
+        def value_mutex(&)
           @value_mutex ||= begin
             require 'monitor'
             Monitor.new
           end
-          @value_mutex.synchronize(&block)
+          @value_mutex.synchronize(&)
         end
       end
     end

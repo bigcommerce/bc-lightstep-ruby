@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.2
   NewCops: enable
   Exclude:
     - spec/**/*
@@ -10,8 +10,10 @@ AllCops:
     - log/**/*
     - Rakefile
     - bc-lightstep-ruby.gemspec
-require:
+plugins:
   - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
 
 Lint/AmbiguousOperator:
   Enabled: false
