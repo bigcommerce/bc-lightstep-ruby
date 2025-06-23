@@ -2,6 +2,8 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
+## 2.8.0
+
 * Add support for Ruby 3.4
 * Drop support for Ruby 3.0, 3.1
 
