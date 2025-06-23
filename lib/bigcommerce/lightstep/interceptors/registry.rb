@@ -91,12 +91,12 @@ module Bigcommerce
         ##
         # Handle mutations to the registry in a thread-safe manner
         #
-        def registry_mutex(&block)
+        def registry_mutex(&)
           @registry_mutex ||= begin
             require 'monitor'
             Monitor.new
           end
-          @registry_mutex.synchronize(&block)
+          @registry_mutex.synchronize(&)
         end
       end
     end
