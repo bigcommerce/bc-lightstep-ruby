@@ -2,7 +2,12 @@ Changelog for the bc-lightstep-ruby gem.
 
 ### Pending Release
 
-## 2.8.0
+### 3.0.0
+
+* Require `faraday` `>= 2.14.1` and `< 3` to address dependency vulnerability exposure; this can impact transitive dependency resolution in downstream apps
+* Add Faraday middleware integration coverage for request header injection and error tagging paths
+
+### 2.8.0
 
 * Add support for Ruby 3.4
 * Drop support for Ruby 3.0, 3.1
