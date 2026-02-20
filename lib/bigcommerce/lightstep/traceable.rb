@@ -48,7 +48,7 @@ module Bigcommerce
               begin
                 arg1 = args.first
                 # method has keyword argument signature (or single-hash positional argument)
-                if arg1.is_a?(Hash) && args.one?
+                if arg1.is_a?(Hash) && args.length == 1
                   # add span as a kwarg
                   span_block&.send(:call, **arg1.merge(span: span))
                   super(**arg1, &block)
